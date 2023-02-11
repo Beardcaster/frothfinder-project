@@ -35,7 +35,9 @@ function hook (id) {
 }
 
 function initiateSearch(query, searchValue) {
-    debugger
+    debugger //something is broken here I think, the correct values pass in
+             //but the search is returning the first 20 breweries
+             //will compare to templates at the top tomorrow.
     fetch(`https://api.openbrewerydb.org/breweries?${query}=${searchValue}`)
     .then(resp => resp.json())
     .then(result => {
