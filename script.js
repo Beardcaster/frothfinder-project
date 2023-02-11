@@ -13,7 +13,7 @@
 //Starts by fetching random.
 
 const searchBy = hook("search-dropdown")
-const searchField = hook("search-feild")
+const searchField = hook("search-field")
 const submitForm = hook("search-form")
 
 submitForm.addEventListener('submit', e => {
@@ -37,23 +37,25 @@ function initiateSearch(query, searchValue) {
         hook("search-result").innerHTML = "";    
         result.forEach(renderResults)
         submitForm.reset();        
-    })   
+    })
+    .catch(console.log("search failed"));   
+}
+
+function renderResults(object) {
+    //what other results should be rendered to the dom in this area. phone? city? address?
+    const result = spawn("li")
+    result.innerText = object.name
+    hook("search-result").appendChild(result);
 }
 
 function hook (id) {
     return document.getElementById(`${id}`); //hook accepts a string and grabs an element from the DOM by id   
 }
 
-function spawn(string) {
+function spawn (string) {
     return document.createElement(`${string}`) //spawn accepts a string and creates an element of that type on the DOM.
 }
 
-function renderResults(object) {
-    
-    const result = spawn("li")
-    result.innerText = object.name
-    hook("search-result").appendChild(result);
-}
 
 
 
