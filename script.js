@@ -33,7 +33,8 @@ function initiateSearch(query, searchValue) {
     
     fetch(`https://api.openbrewerydb.org/breweries?${query}=${searchValue}`)
     .then(resp => resp.json())
-    .then(result => {       
+    .then(result => {   
+        hook("search-result").innerHTML = "";    
         result.forEach(renderResults)
         submitForm.reset();        
     })   
@@ -53,11 +54,6 @@ function renderResults(object) {
     result.innerText = object.name
     hook("search-result").appendChild(result);
 }
-
-
- // fetch("https://api.openbrewerydb.org/breweries/search?query=prost-brewing") 
-    // .then(resp => resp.json())
-    // .then(data => console.log(data)) 
 
 
 
