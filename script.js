@@ -16,36 +16,27 @@ const searchBy = hook("search-dropdown")
 const searchField = hook("search-feild")
 const submitForm = hook("search-form")
 
-console.log(searchBy);
-
 submitForm.addEventListener('submit', e => {
-    e.preventDefault() //gotta have this
 
     const query = searchBy.value; //value of dropdown to query to pass into get
     const searchValue = e.target.item.value; //assigns string in form to search value
     
-    initiateSearch(query, searchValue); //runs search
-   
+    initiateSearch(query, searchValue);   
 })
 
 
-
-function hook (id) {
-    return document.getElementById(`${id}`); //hook accepts a string and grabs an element from the dom by id   
-}
-
 function initiateSearch(query, searchValue) {
-    debugger //something is broken here I think, the correct values pass in
-             //but the search is returning the first 20 breweries
-             //will compare to templates at the top tomorrow.
+    
     fetch(`https://api.openbrewerydb.org/breweries?${query}=${searchValue}`)
     .then(resp => resp.json())
-    .then(result => {
-        console.log(result);
-        debugger
+    .then(result => {       
         result.forEach(renderResults)
         submitForm.reset();        
     })   
+}
+
+function hook (id) {
+    return document.getElementById(`${id}`); //hook accepts a string and grabs an element from the dom by id   
 }
 
 function spawnElement(string) {
@@ -53,11 +44,9 @@ function spawnElement(string) {
 }
 
 function renderResults(object) {
-
     const result = spawnElement("li")
     result.innerText = object.name
-    hook("search-result").appendChild(result);        
-
+    hook("search-result").appendChild(result);
 }
 
 
