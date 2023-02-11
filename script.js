@@ -19,24 +19,43 @@ const submitForm = hook("search-form")
 console.log(searchBy);
 
 submitForm.addEventListener('submit', e => {
-
     e.preventDefault() //gotta have this
 
     const query = searchBy.value; //value of dropdown to query to pass into get
     const searchValue = e.target.item.value; //assigns string in form to search value
     
     initiateSearch(query, searchValue); //runs search
-    submitForm.reset();
+   
 })
 
+
+
 function hook (id) {
-    return document.getElementById(`${id}`);    
+    return document.getElementById(`${id}`); //hook accepts a string and grabs an element from the dom by id   
 }
 
 function initiateSearch(query, searchValue) {
+    debugger
     fetch(`https://api.openbrewerydb.org/breweries?${query}=${searchValue}`)
     .then(resp => resp.json())
-    .then(data => (console.log(data)))   
+    .then(result => {
+        console.log(result);
+        debugger
+        result.forEach(renderResults)
+        submitForm.reset();        
+    })   
+}
+
+function spawnElement(string) {
+    return document.createElement(`${string}`) //string passed in should be type of element to create.
+}
+
+function renderResults(object) {
+
+    const result = spawnElement("li")
+    result.innerText = object.name
+    hook("search-result").appendChild(result);        
+
 }
 
 
