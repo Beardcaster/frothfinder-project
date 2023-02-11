@@ -17,10 +17,9 @@ const searchField = hook("search-feild")
 const submitForm = hook("search-form")
 
 submitForm.addEventListener('submit', e => {
-
+    e.preventDefault();
     const query = searchBy.value; //value of dropdown to query to pass into get
-    const searchValue = e.target.item.value; //assigns string in form to search value
-    
+    const searchValue = e.target.item.value; //assigns string in form to search value  
     initiateSearch(query, searchValue);   
 })
 
@@ -36,15 +35,16 @@ function initiateSearch(query, searchValue) {
 }
 
 function hook (id) {
-    return document.getElementById(`${id}`); //hook accepts a string and grabs an element from the dom by id   
+    return document.getElementById(`${id}`); //hook accepts a string and grabs an element from the DOM by id   
 }
 
-function spawnElement(string) {
-    return document.createElement(`${string}`) //string passed in should be type of element to create.
+function spawn(string) {
+    return document.createElement(`${string}`) //spawn accepts a string and creates an element of that type on the DOM.
 }
 
 function renderResults(object) {
-    const result = spawnElement("li")
+    debugger
+    const result = spawn("li")
     result.innerText = object.name
     hook("search-result").appendChild(result);
 }
