@@ -25,6 +25,11 @@ submitForm.addEventListener('submit', e => {
 
 
 function initiateSearch(query, searchValue) {
+
+    if(searchValue.length === 0){
+        console.log('no search value enterred') //without this an empty search returns 20 breweries from the front of the database.
+        return;
+    }
     
     fetch(`https://api.openbrewerydb.org/breweries?${query}=${searchValue}`)
     .then(resp => resp.json())
@@ -43,7 +48,7 @@ function spawn(string) {
 }
 
 function renderResults(object) {
-    debugger
+    
     const result = spawn("li")
     result.innerText = object.name
     hook("search-result").appendChild(result);
