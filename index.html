@@ -1,8 +1,18 @@
-<html>
+
+<!DOCTYPE html>
+<html lang ="en">
     <head>
-        <script defer src="script.js"></script>
+        <title>Froth Finder</title>
+        <link rel="stylesheet" href="./style.css">
+        <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/988/988934.png">
+        <script defer src = index.js></script>
     </head>
     <body>
+        <style>
+            /* body {
+              background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-muCg_pG42wygV315Ht4BnS40rLgs1co18A&usqp=CAU');
+            } */
+            </style>
         <div id="search-container">
             <label for="search-criteria">Search By:</label> 
             <select name ="options" id="search-dropdown">
@@ -11,6 +21,12 @@
                 <option value ="by_state">State</option>
                 <option value ="by_postal">Zipcode</option>
             </select> 
+            <label for="per-page">Per Page:</label>
+            <select name="per-page" id="per-page">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+            </select>
             <form id="search-form">
                 <label for="search-field-and-submit">Query</label>
                 <input type="text" id="search-field" name="item">
@@ -18,9 +34,18 @@
             </form>                     
         </div>
         <div>
-            <ul id="search-result";>
+            <div class="initial-results">
+                <h2>Search Results</h2>
+                    <ul id="search-result">
 
-            </ul>
+                    </ul>
+            </div>
+            <div class="initial-results">
+                <h2>Details</h2>
+                <div id="details">
+                    <div></div>
+                </div>
+            </div>
         </div>
     </body>
 </html>
