@@ -14,7 +14,7 @@ submitForm.addEventListener('submit', e => {
 function initiateSearch(query, searchValue, perPage) {
 
     if(searchValue.length === 0){
-        console.log('no search value enterred') //without this an empty search returns 20 breweries from the front of the database.
+        console.log('no search value enterred')
         return;
     }
     
@@ -35,20 +35,39 @@ function renderResults(object) {
     hook("search-result").appendChild(result);
 
     result.addEventListener('click', () => {
-
-        console.log(object)
-        const detailResults = hook('details');
-
-        detailResults.innerHTML = `
-        <h4>Name: ${object.name}</h4>
-        <p>Address: ${object.street}</p>
-        <p> ${object.city}, ${object.state} ${object.postal_code}</p>
-        <p>Country: ${object.country}</p>
-        <p>Phone Number: ${object.phone}</p>
-        <p>Brewery Type: ${object.brewery_type}</p>
-        `
+        renderDetails(object)
     })
 }
+
+function renderDetails (object){
+
+    console.log(object)
+    const detailResults = hook('details');
+
+    hook("brewery").innerText = object.name;
+    hook("phone").innerText = object.phone;
+    hook("website").innerText = object.website_url;
+
+    // detailResults.innerHTML = `
+    // <h4>Name: ${object.name}</h4>
+    // <p>Address: ${object.street}<br>
+    // ${object.city}, ${object.state} ${object.postal_code}<br>
+    // ${object.country}</p>
+    // <p>Phone Number: ${object.phone}</p>
+    // <p>Brewery Type: ${object.brewery_type}</p>
+    // `
+
+    const favoriteBtn = spawn("button")
+    favoriteBtn.innerText = "Add Favorite!"
+    detailResults.appendChild(favoriteBtn);
+
+}
+
+function resetDetails() {
+    
+}
+
+
 
 //keyword functions to give our fingertips time to heal
 function hook (string) {
