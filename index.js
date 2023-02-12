@@ -1,3 +1,5 @@
+
+//did i fix it?
 //moved possible querys to text file possible-querys.txt
 const searchBy = hook("search-dropdown")
 const searchField = hook("search-field")
