@@ -1,5 +1,4 @@
 
-//did i fix it?
 //moved possible querys to text file possible-querys.txt
 const searchBy = hook("search-dropdown")
 const searchField = hook("search-field")
@@ -47,8 +46,11 @@ function renderDetails (object){
     const detailResults = hook('details');
 
     hook("brewery").innerText = object.name;
-    hook("phone").innerText = object.phone;
-    hook("website").innerText = object.website_url;
+    hook("phone").innerText = `Phone: ${object.phone}`;
+    hook("website").innerText = `Website: ${object.website_url}`;
+    hook("street").innerText = `${object.street}`
+    hook("city-state-zip").innerText = `${object.city}, ${object.state} ${object.postal_code}`
+
 
     // detailResults.innerHTML = `
     // <h4>Name: ${object.name}</h4>
@@ -63,13 +65,9 @@ function renderDetails (object){
     favoriteBtn.innerText = "Add Favorite!"
     detailResults.appendChild(favoriteBtn);
 
+    //the favorite button is still a little broken. each newly populated details
+    //makes a new button. will fix this later today.
 }
-
-function resetDetails() {
-    
-}
-
-
 
 //keyword functions to give our fingertips time to heal
 function hook (string) {

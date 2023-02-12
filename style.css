@@ -19,3 +19,8 @@ html {
     list-style-type: none;
     width: 500px;
 }
+
+#listed-details {
+  list-style-type: none;
+  width: 500px;
+}

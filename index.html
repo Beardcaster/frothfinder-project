@@ -17,14 +17,14 @@
             <label for="search-criteria">Search By:</label> 
             <select name ="options" id="search-dropdown">
                 <option value ="by_name">Brewery Name</option>
-                <option value ="by_city">City</option>
+                <option value ="by_city" selected>City</option>
                 <option value ="by_state">State</option>
                 <option value ="by_postal">Zipcode</option>
             </select> 
             <label for="per-page">Per Page:</label>
             <select name="per-page" id="per-page">
                 <option value="5">5</option>
-                <option value="10">10</option>
+                <option value="10" selected>10</option>
                 <option value="20">20</option>
             </select>
             <form id="search-form">
@@ -48,7 +48,7 @@
                         <li id="phone"></li>
                         <li id="website"></li>
                     </ul>
-                    <p id="address"></p>
+                    <p id="address"><span id="street"></span><br><span id='city-state-zip'></span></p>
                     <div></div>
                 </div>
             </div>
