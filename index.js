@@ -1,17 +1,4 @@
-//POSSIBLE QUERYS
-
-// BY CITY https://api.openbrewerydb.org/breweries?by_city=san_diego&per_page=3
-// BY NAME https://api.openbrewerydb.org/breweries?by_name=cooper&per_page=3
-// BY STATE https://api.openbrewerydb.org/breweries?by_state=new_york&per_page=3
-// BY POSTAL CODE GET https://api.openbrewerydb.org/breweries?by_postal=44107&per_page=3
-// PER PAGE GET https://api.openbrewerydb.org/breweries?per_page=2
-// SORT GET https://api.openbrewerydb.org/breweries?by_state=ohio&sort=type,name:asc&per_page=3
-// GET SIZE https://api.openbrewerydb.org/breweries/random?size=3
-// GET SEARCH https://api.openbrewerydb.org/breweries/search?query=dog&per_page=3
-// AUTO COMPLETE FOR DROP-DOWN GET https://api.openbrewerydb.org/breweries/autocomplete?query=dog
-
-//Starts by fetching random.
-
+//moved possible querys to text file possible-querys.txt
 const searchBy = hook("search-dropdown")
 const searchField = hook("search-field")
 const submitForm = hook("search-form")
@@ -48,8 +35,10 @@ function renderResults(object) {
     hook("search-result").appendChild(result);
 
     result.addEventListener('click', () => {
+
         console.log(object)
         const detailResults = hook('details');
+
         detailResults.innerHTML = `
         <h4>Name: ${object.name}</h4>
         <p>Address: ${object.street}</p>
@@ -61,12 +50,17 @@ function renderResults(object) {
     })
 }
 
-function hook (id) {
-    return document.getElementById(`${id}`); //hook accepts a string and grabs an element from the DOM by id   
+//keyword functions to give our fingertips time to heal
+function hook (string) {
+    return document.getElementById(`${string}`); //hook accepts a string and grabs an element from the DOM by id   
 }
 
 function spawn (string) {
     return document.createElement(`${string}`) //spawn accepts a string and creates an element of that type on the DOM.
+}
+
+function grab (string) {
+    return document.querySelector(`${string}`) //let me know if these things are helpful
 }
 
 
