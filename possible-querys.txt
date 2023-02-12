@@ -9,5 +9,5 @@
 // GET SIZE https://api.openbrewerydb.org/breweries/random?size=3
 // GET SEARCH https://api.openbrewerydb.org/breweries/search?query=dog&per_page=3
 // AUTO COMPLETE FOR DROP-DOWN GET https://api.openbrewerydb.org/breweries/autocomplete?query=dog
-
+// GET RANDOM https://api.openbrewerydb.org/breweries/random
 //Starts by fetching random.

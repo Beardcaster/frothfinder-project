@@ -1,5 +1,7 @@
+document.addEventListener("DOMContentLoaded", () => {
+    renderRandom();
+})
 
-//moved possible querys to text file possible-querys.txt
 const searchBy = hook("search-dropdown")
 const searchField = hook("search-field")
 const submitForm = hook("search-form")
@@ -36,6 +38,7 @@ function renderResults(object) {
     hook("search-result").appendChild(result);
 
     result.addEventListener('click', () => {
+
         renderDetails(object)
     })
 }
@@ -45,12 +48,12 @@ function renderDetails (object){
     console.log(object)
     const detailResults = hook('details');
 
+
     hook("brewery").innerText = object.name;
     hook("phone").innerText = `Phone: ${object.phone}`;
     hook("website").innerText = `Website: ${object.website_url}`;
     hook("street").innerText = `${object.street}`
     hook("city-state-zip").innerText = `${object.city}, ${object.state} ${object.postal_code}`
-
 
     // detailResults.innerHTML = `
     // <h4>Name: ${object.name}</h4>
@@ -59,14 +62,15 @@ function renderDetails (object){
     // ${object.country}</p>
     // <p>Phone Number: ${object.phone}</p>
     // <p>Brewery Type: ${object.brewery_type}</p>
-    // `
+    // `    
+}
 
-    const favoriteBtn = spawn("button")
-    favoriteBtn.innerText = "Add Favorite!"
-    detailResults.appendChild(favoriteBtn);
+function renderRandom(){
 
-    //the favorite button is still a little broken. each newly populated details
-    //makes a new button. will fix this later today.
+    fetch("https://api.openbrewerydb.org/breweries/random")
+    .then(resp => resp.json())
+    .then(data => renderDetails(data[0]))
+
 }
 
 //keyword functions to give our fingertips time to heal
