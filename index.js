@@ -136,6 +136,13 @@ function renderDetails (object){
     currentBrewery = object;
 }
 
+
+hook("favorite-button").addEventListener('click', () => {
+    const fav = spawn('li');
+    fav.textContent = currentBrewery.name;
+    document.querySelector('#favorites-container').append(fav);
+})
+
 function renderRandom(){
     //renders a random brewery from the API on page load
     fetch("https://api.openbrewerydb.org/breweries/random")
