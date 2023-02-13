@@ -29,3 +29,11 @@ html {
 .search-res {
   cursor: pointer;
 }
+
+#favorites-container {
+  float: right;
+}
+
+.favorite {
+  cursor: pointer;
+}
