@@ -1,4 +1,5 @@
 renderRandom();
+checkProfiles();
 
 hook("search-form").addEventListener('submit', e => {
     e.preventDefault();
@@ -37,7 +38,23 @@ function renderResults(object) {
     })
 }
 
-function swapProfiles(object){
+function checkProfiles() {
+    fetch("http://localhost:3000/profiles")
+    .then(resp => resp.json())
+    .then(data => {
+        console.log(data);
+        data.forEach(renderProfileList);
+    })
+}
+
+function renderProfileList(profile) {
+    const profileEntry = spawn("option");
+    profileEntry.innerText = profile.name;
+    profileEntry.setAttribute("value", profile.name.toLowerCase());
+    hook("profile-select").appendChild(profileEntry);
+}
+
+function swapProfiles(object){ // this will be triggered by an event listener
     console.log(object)
 }
 

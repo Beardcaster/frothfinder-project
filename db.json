@@ -1,9 +1,18 @@
-[
-    {
-        "username": "Jayson",
-        "favorites": [
-            "zwei-brewing-co-fort-collins",
-            "funkwerks-fort-collins"
-        ]
-    }
-]
+{
+    "profiles": [
+        {
+            "name": "Jayson",
+            "favorites": [
+                "zwei-brewing-co-fort-collins",
+                "funkwerks-fort-collins"
+            ]
+        },
+        {
+            "name": "Dillon",
+            "favorites": [
+                "funkwerks-fort-collins",
+                "jessup-farm-barrel-house-fort-collins"
+            ]
+        }
+    ]
+}
