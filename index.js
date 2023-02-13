@@ -21,6 +21,11 @@ hook("profile-select").addEventListener('change',  (e) => {
     learnProfileFavorites(currentProfile, availableProfiles);
 })
 
+//event listener for clicking favorite button
+hook("favorite-button").addEventListener('click', () => {
+    renderFavorite(currentBrewery);
+})
+
 function initiateSearch(query, searchValue, perPage) {
 //initiates search of API
     if(searchValue.length === 0){
@@ -76,10 +81,21 @@ function renderProfileList(profile) {
     availableProfiles.push(profile); //stores object in global scoped array for use elsewhere.   
 }
 
+function addProfile(object) {
+    //PATCH NEW PROFILE OBJECT TO DB.JSON
+    //RENDER NEW PROFILE ON OBJECT
+}
+
+function updateProfileFavorites (object) {
+    //DETERMINE CURRENT PROFILE
+    //MAKE POST TO CURRENT PROFILE UPDATING FAVORITES LIST
+}
+
 function learnProfileFavorites(string, array){
     //this function gets the active profile's favorites from profile object and delivers them to API GET
     const activeProfile = array.find(object => object.name === string);   
-    console.log(activeProfile);
+    // console.log(activeProfile);
+    clearFavoritesList()
     activeProfile.favorites.forEach(getProfileFavoriteFromAPI) 
 }
 
@@ -88,7 +104,21 @@ function getProfileFavoriteFromAPI(string) {
     // console.log(string)
     fetch(`https://api.openbrewerydb.org/breweries/${string}`)
     .then(resp => resp.json())
-    .then(data => console.log(data))
+    .then(data => renderFavorite(data))
+}
+
+function renderFavorite(object){
+    //this function renders an item to the favorites list.
+    const fav = spawn('li');
+    fav.textContent = object.name;
+    fav.classList = "favorite"
+
+    document.querySelector('#favorite-list').append(fav);
+
+    fav.addEventListener('click', e => {
+        renderDetails(object)
+        animateSelect(fav)
+    })
 }
 
 function renderDetails (object){
@@ -101,7 +131,7 @@ function renderDetails (object){
     hook("url-container").innerText = `${object.website_url}`;
     hook("anchor").setAttribute("href", `${object.website_url}`)
     hook("street").innerText = `${object.street}`
-    hook("city-state-zip").innerText = `${object.city}, ${object.state} ${object.postal_code}` 
+    hook("city-state-zip").innerText = `${object.city}, ${object.state} ${object.postal_code}`
     
     currentBrewery = object;
 }
@@ -118,6 +148,10 @@ function renderRandom(){
     fetch("https://api.openbrewerydb.org/breweries/random")
     .then(resp => resp.json())
     .then(data => renderDetails(data[0]))
+}
+
+function clearFavoritesList() {    
+    hook("favorite-list").innerHTML = '';
 }
 
 ///////////////////////////////////////////

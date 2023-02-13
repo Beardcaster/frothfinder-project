@@ -53,3 +53,7 @@ width: 500px;
 #favorites-container {
   float: right;
 }
+
+.favorite {
+  cursor: pointer;
+}
