@@ -13,6 +13,21 @@
                 "funkwerks-fort-collins",
                 "jessup-farm-barrel-house-fort-collins"
             ]
+        },
+        {
+            "name": "Bob",
+            "favorites": [
+                "coopersmiths-pub-and-brewing-fort-collins",
+                "intersect-brewing-fort-collins"
+            ]
+        },
+        {
+            "name": "Kelsey",
+            "favorites": [
+                "prost-brewing-fort-collins-fort-collins",
+                "odell-brewing-co-fort-collins",
+                "funkwerks-fort-collins"
+            ]
         }
     ]
 }

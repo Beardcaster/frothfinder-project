@@ -1,3 +1,5 @@
+const availableProfiles = [];
+
 renderRandom();
 checkProfiles();
 
@@ -7,6 +9,11 @@ hook("search-form").addEventListener('submit', e => {
     const perPage = hook("per-page").value; //per page dropdown value for get
     const searchValue = e.target.item.value; //assigns string in form to search value  
     initiateSearch(query, searchValue, perPage);    
+})
+
+hook("profile-select").addEventListener('change',  (e) => {
+    const currentProfile = e.target.value;
+    swapFavoritesByProfile(currentProfile, availableProfiles);
 })
 
 function initiateSearch(query, searchValue, perPage) {
@@ -42,7 +49,6 @@ function checkProfiles() {
     fetch("http://localhost:3000/profiles")
     .then(resp => resp.json())
     .then(data => {
-        console.log(data);
         data.forEach(renderProfileList);
     })
 }
@@ -50,12 +56,23 @@ function checkProfiles() {
 function renderProfileList(profile) {
     const profileEntry = spawn("option");
     profileEntry.innerText = profile.name;
-    profileEntry.setAttribute("value", profile.name.toLowerCase());
+    profileEntry.setAttribute("value", profile.name);
     hook("profile-select").appendChild(profileEntry);
+    availableProfiles.push(profile); //stores object in global scoped array for use elsewhere   
 }
 
-function swapProfiles(object){ // this will be triggered by an event listener
-    console.log(object)
+function swapFavoritesByProfile(string, array){
+    
+    const activeProfile = array.find(object => object.name === string);   
+    console.log(activeProfile);
+    activeProfile.favorites.forEach(getFavoriteId) 
+}
+
+function getFavoriteId(string) {    
+    console.log(string)
+    fetch(`https://api.openbrewerydb.org/breweries/${string}`)
+    .then(resp => resp.json())
+    .then(data => console.log(data))
 }
 
 function renderDetails (object){
@@ -68,16 +85,7 @@ function renderDetails (object){
     hook("url-container").innerText = `${object.website_url}`;
     hook("anchor").setAttribute("href", `${object.website_url}`)
     hook("street").innerText = `${object.street}`
-    hook("city-state-zip").innerText = `${object.city}, ${object.state} ${object.postal_code}`
-
-    // detailResults.innerHTML = `
-    // <h4>Name: ${object.name}</h4>
-    // <p>Address: ${object.street}<br>
-    // ${object.city}, ${object.state} ${object.postal_code}<br>
-    // ${object.country}</p>
-    // <p>Phone Number: ${object.phone}</p>
-    // <p>Brewery Type: ${object.brewery_type}</p>
-    // `    
+    hook("city-state-zip").innerText = `${object.city}, ${object.state} ${object.postal_code}`  
 }
 
 function renderRandom(){
@@ -86,9 +94,10 @@ function renderRandom(){
     .then(data => renderDetails(data[0]))
 }
 
-// function
+///////////////////////////////////////////
+///////////KEYWORD FUNCTIONS///////////////
+///////////////////////////////////////////
 
-//keyword functions to give our fingertips time to heal
 function hook (string) {
     return document.getElementById(`${string}`); //hook accepts a string and grabs an element from the DOM by id   
 }
