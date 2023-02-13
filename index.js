@@ -30,19 +30,25 @@ function initiateSearch(query, searchValue, perPage) {
         result.forEach(renderResults)
         hook("search-form").reset();        
     })
-    .catch(console.log("search failed"));
+    // .catch(console.log("search failed")); //this catch goes off even if search successful.
 }
 
 function renderResults(object) {
     //what other results should be rendered to the dom in this area. phone? city? address?
     const result = spawn("li")
     result.innerText = object.name
-    result.classList = ("search-result")
+    result.classList = ("search-res")
     hook("search-result").appendChild(result);
 
-    result.addEventListener('click', () => {
+    result.addEventListener('click', (e) => {
         renderDetails(object)
+        animateSelect(result)
     })
+}
+
+function animateSelect(result) {
+    result.style.color = "blue"
+    setTimeout(() => result.style.color = "black", 100)
 }
 
 function checkProfiles() {
@@ -58,18 +64,18 @@ function renderProfileList(profile) {
     profileEntry.innerText = profile.name;
     profileEntry.setAttribute("value", profile.name);
     hook("profile-select").appendChild(profileEntry);
-    availableProfiles.push(profile); //stores object in global scoped array for use elsewhere   
+    availableProfiles.push(profile); //stores object in global scoped array for use elsewhere.   
 }
 
 function swapFavoritesByProfile(string, array){
     
     const activeProfile = array.find(object => object.name === string);   
     console.log(activeProfile);
-    activeProfile.favorites.forEach(getProfileFavoriteId) 
+    activeProfile.favorites.forEach(getProfileFavoriteFromAPI) 
 }
 
-function getProfileFavoriteId(string) {    
-    console.log(string)
+function getProfileFavoriteFromAPI(string) {    
+    // console.log(string)
     fetch(`https://api.openbrewerydb.org/breweries/${string}`)
     .then(resp => resp.json())
     .then(data => console.log(data))
@@ -77,7 +83,7 @@ function getProfileFavoriteId(string) {
 
 function renderDetails (object){
 
-    console.log(object)
+    // console.log(object)
     const detailResults = hook('details');
 
     hook("brewery").innerText = object.name;
