@@ -28,7 +28,7 @@ function initiateSearch(query, searchValue, perPage) {
         result.forEach(renderResults)
         submitForm.reset();        
     })
-    .catch(console.log("search failed"));   
+    .catch(console.log("search failed"));
 }
 
 function renderResults(object) {
@@ -47,7 +47,6 @@ function renderDetails (object){
 
     console.log(object)
     const detailResults = hook('details');
-
 
     hook("brewery").innerText = object.name;
     hook("phone").innerText = `Phone: ${object.phone}`;

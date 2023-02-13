@@ -8,6 +8,7 @@ html {
     min-height: 100%;
     min-width: 100%;
     background-size: cover;
+    /* background: linear-gradient(50deg, rgba(240,165,0,1) 0%, rgba(27,26,23,1) 73%);  */
   }
 
 .initial-results {
