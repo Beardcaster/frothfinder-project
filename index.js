@@ -1,5 +1,6 @@
 //global variables
 const availableProfiles = [];
+let currentBrewery;
 
 //functions to run on page load
 renderRandom();
@@ -105,7 +106,6 @@ function renderDetails (object){
     currentBrewery = object;
 }
 
-let currentBrewery;
 
 hook("favorite-button").addEventListener('click', () => {
     const fav = spawn('li');

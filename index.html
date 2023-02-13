@@ -5,57 +5,58 @@
         <link rel="stylesheet" href="style.css">
         <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/988/988934.png">
         <script defer src = index.js></script>
-        <h1>Froth Finder</h1>
+        <h1 class="header">Froth Finder</h1>
+            <p class="header">Find your next favorite Brewery</p>
     </head>
     <body>
         <div class="banner">
             <div id="top-bar">
                 <div id="search-container">
                     <label for="search-criteria">Search By:</label> 
-                    <select name ="options" id="search-dropdown">
-                        <option value ="by_name">Brewery Name</option>
-                        <option value ="by_city" selected>City</option>
-                        <option value ="by_state">State</option>
-                        <option value ="by_postal">Zipcode</option>
-                    </select> 
-                    <label for="per-page">Per Page:</label>
-                    <select name="per-page" id="per-page">
-                        <option value="5">5</option>
-                        <option value="10" selected>10</option>
-                        <option value="20">20</option>
-                    </select>
-                    <form id="search-form">
-                        <label for="search-field-and-submit">Query</label>
-                        <input type="text" id="search-field" name="item">
-                        <input type="submit" value="Find Froth" id="search-submit">
-                    </form>
-                </div>
-                <div id="profiles">
-                    <label for="profile-select">Profile:</label>
-                    <select id="profile-select">
-                        <option value="none" selected>None</option>
-                    </select>
-                </div>                     
-            </div>
-            <div id="results-container">
-                <div class="initial-results" id="result-list">
-                    <h2>Search Results</h2>
-                        <ul id="search-result"></ul>
-                </div>
-                <div class="initial-results">
-                    <h2>Details</h2>
-                    <div id="details">
-                        <h4 id="brewery"></h4>
-                        <ul id="listed-details">
-                            <li id="phone"></li>
-                            <li id="website">Website: <a id="anchor"><span id="url-container"></span></a></li>
-                        </ul>
-                        <p id="address"><span id="street"></span><br><span id='city-state-zip'></span></p>
-                        <button id="favorite-button">Favorite!</button>
-                        <div></div>
-                    </div>
+                        <select name ="options" id="search-dropdown">
+                            <option value ="by_name">Brewery Name</option>
+                            <option value ="by_city" selected>City</option>
+                            <option value ="by_state">State</option>
+                            <option value ="by_postal">Zipcode</option>
+                        </select>
+                        <label for="per-page">Per Page:</label>
+                        <select name="per-page" id="per-page">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="20">20</option>
+                        </select>
+                        <form id="search-form">
+                            <label for="search-field-and-submit">Query</label>
+                            <input type="text" id="search-field" name="item">
+                            <input type="submit" value="Find Froth" id="search-submit">
+                        </form>
+                        <div id="profiles">
+                            <label for="profile-select">Profile:</label>
+                            <select id="profile-select">
+                                <option value="none" selected>None</option>
+                            </select>
+                        </div>
                 </div>
             </div>
+        <div id="results-container">
+            <div class="initial-results" id="result-list">
+                <h2>Search Results</h2>
+                    <ul id="search-result"></ul>
+            </div>
+        </div>
+        <div class="initial-results">
+            <h2>Details</h2>
+                <div id="details">
+                    <h4 id="brewery"></h4>
+                    <ul id="listed-details">
+                        <li id="phone"></li>
+                        <li id="website">Website: <a id="anchor"><span id="url-container"></span></a></li>
+                    </ul>
+                    <p id="address"><span id="street"></span><br><span id='city-state-zip'></span></p>
+                    <button id="favorite-button">Favorite!</button>
+                    <div></div>
+                </div>
+        </div>
             <div class="initial-results" id="favorites-container"> 
                 <h2>Favorites</h2>
             </div>
