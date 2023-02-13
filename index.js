@@ -51,7 +51,8 @@ function renderDetails (object){
 
     hook("brewery").innerText = object.name;
     hook("phone").innerText = `Phone: ${object.phone}`;
-    hook("website").innerText = `Website: ${object.website_url}`;
+    hook("url-container").innerText = `${object.website_url}`;
+    hook("anchor").setAttribute("href", `${object.website_url}`)
     hook("street").innerText = `${object.street}`
     hook("city-state-zip").innerText = `${object.city}, ${object.state} ${object.postal_code}`
 
@@ -66,11 +67,9 @@ function renderDetails (object){
 }
 
 function renderRandom(){
-
     fetch("https://api.openbrewerydb.org/breweries/random")
     .then(resp => resp.json())
     .then(data => renderDetails(data[0]))
-
 }
 
 //keyword functions to give our fingertips time to heal
