@@ -37,10 +37,10 @@ function renderResults(object) {
     //what other results should be rendered to the dom in this area. phone? city? address?
     const result = spawn("li")
     result.innerText = object.name
+    result.classList = ("search-result")
     hook("search-result").appendChild(result);
 
     result.addEventListener('click', () => {
-
         renderDetails(object)
     })
 }
@@ -65,10 +65,10 @@ function swapFavoritesByProfile(string, array){
     
     const activeProfile = array.find(object => object.name === string);   
     console.log(activeProfile);
-    activeProfile.favorites.forEach(getFavoriteId) 
+    activeProfile.favorites.forEach(getProfileFavoriteId) 
 }
 
-function getFavoriteId(string) {    
+function getProfileFavoriteId(string) {    
     console.log(string)
     fetch(`https://api.openbrewerydb.org/breweries/${string}`)
     .then(resp => resp.json())

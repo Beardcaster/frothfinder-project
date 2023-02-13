@@ -25,3 +25,7 @@ html {
   list-style-type: none;
   width: 500px;
 }
+
+.search-result {
+  cursor: pointer;
+}
