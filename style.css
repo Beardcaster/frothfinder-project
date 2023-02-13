@@ -1,31 +1,43 @@
 html {
-    height: 100%;
-    width: 100%;
-    font-family: "Titillium Web", sans-serif;
-  }
+  height: 100%;
+  width: 100%;
+  font-family: "Titillium Web", sans-serif;
+}
 
-  body {
-    min-height: 100%;
-    min-width: 100%;
-    background-size: cover;
-    /* background: linear-gradient(50deg, rgba(240,165,0,1) 0%, rgba(27,26,23,1) 73%);  */
-  }
+.banner{
+  width: 100%;
+  height: 100vh;
+  /* background-image: linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),url(Background.jpg); */
+  background-size: cover;
+  background-position: center;
+}
+
+body {
+  min-height: 100%;
+  min-width: 100%;
+  background-size: cover;
+  /* background: linear-gradient(50deg, rgba(240,165,0,1) 0%, rgba(27,26,23,1) 73%);  */
+}
 
 .initial-results {
-    float: left;
-    width: 50%;
+  float: left;
+  width: 50%;
 }
 
 #result-list ul {
-    list-style-type: none;
-    width: 500px;
-}
-
-#listed-details {
   list-style-type: none;
   width: 500px;
 }
 
+#listed-details {
+list-style-type: none;
+width: 500px;
+}
+
 .search-res {
   cursor: pointer;
+}
+
+#favorites-container {
+  float: right;
 }

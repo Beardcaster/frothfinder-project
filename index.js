@@ -100,8 +100,18 @@ function renderDetails (object){
     hook("url-container").innerText = `${object.website_url}`;
     hook("anchor").setAttribute("href", `${object.website_url}`)
     hook("street").innerText = `${object.street}`
-    hook("city-state-zip").innerText = `${object.city}, ${object.state} ${object.postal_code}`  
+    hook("city-state-zip").innerText = `${object.city}, ${object.state} ${object.postal_code}` 
+    
+    currentBrewery = object;
 }
+
+let currentBrewery;
+
+hook("favorite-button").addEventListener('click', () => {
+    const fav = spawn('li');
+    fav.textContent = currentBrewery.name;
+    document.querySelector('#favorites-container').append(fav);
+})
 
 function renderRandom(){
     //renders a random brewery from the API on page load
