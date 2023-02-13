@@ -1,17 +1,11 @@
-document.addEventListener("DOMContentLoaded", () => {
-    renderRandom();
-})
+renderRandom();
 
-const searchBy = hook("search-dropdown")
-const searchField = hook("search-field")
-const submitForm = hook("search-form")
-
-submitForm.addEventListener('submit', e => {
+hook("search-form").addEventListener('submit', e => {
     e.preventDefault();
-    const query = searchBy.value; //value of dropdown to query to pass into get
+    const query = hook("search-dropdown").value; //value of dropdown to query to pass into get
     const perPage = hook("per-page").value; //per page dropdown value for get
     const searchValue = e.target.item.value; //assigns string in form to search value  
-    initiateSearch(query, searchValue, perPage);   
+    initiateSearch(query, searchValue, perPage);    
 })
 
 function initiateSearch(query, searchValue, perPage) {
@@ -26,7 +20,7 @@ function initiateSearch(query, searchValue, perPage) {
     .then(result => {   
         hook("search-result").innerHTML = "";    
         result.forEach(renderResults)
-        submitForm.reset();        
+        hook("search-form").reset();        
     })
     .catch(console.log("search failed"));
 }
@@ -41,6 +35,10 @@ function renderResults(object) {
 
         renderDetails(object)
     })
+}
+
+function swapProfiles(object){
+    console.log(object)
 }
 
 function renderDetails (object){
@@ -70,6 +68,8 @@ function renderRandom(){
     .then(resp => resp.json())
     .then(data => renderDetails(data[0]))
 }
+
+// function
 
 //keyword functions to give our fingertips time to heal
 function hook (string) {
