@@ -1,8 +1,11 @@
+//global variables
 const availableProfiles = [];
 
+//functions to run on page load
 renderRandom();
 checkProfiles();
 
+//event listener for submitting search
 hook("search-form").addEventListener('submit', e => {
     e.preventDefault();
     const query = hook("search-dropdown").value; //value of dropdown to query to pass into get
@@ -11,15 +14,16 @@ hook("search-form").addEventListener('submit', e => {
     initiateSearch(query, searchValue, perPage);    
 })
 
+//event listener for changing selection in profile dropdown
 hook("profile-select").addEventListener('change',  (e) => {
     const currentProfile = e.target.value;
-    swapFavoritesByProfile(currentProfile, availableProfiles);
+    learnProfileFavorites(currentProfile, availableProfiles);
 })
 
 function initiateSearch(query, searchValue, perPage) {
-
+//initiates search of API
     if(searchValue.length === 0){
-        console.log('no search value enterred')
+        console.log('no search value entered')
         return;
     }
     
@@ -34,6 +38,7 @@ function initiateSearch(query, searchValue, perPage) {
 }
 
 function renderResults(object) {
+    //renders list of results
     //what other results should be rendered to the dom in this area. phone? city? address?
     const result = spawn("li")
     result.innerText = object.name
@@ -47,11 +52,13 @@ function renderResults(object) {
 }
 
 function animateSelect(result) {
+    //animates selected search result with quick flash of blue can change later to match asthetic
     result.style.color = "blue"
     setTimeout(() => result.style.color = "black", 100)
 }
 
 function checkProfiles() {
+    //checks the mock server for valid profiles.
     fetch("http://localhost:3000/profiles")
     .then(resp => resp.json())
     .then(data => {
@@ -60,6 +67,7 @@ function checkProfiles() {
 }
 
 function renderProfileList(profile) {
+    //adds valid profile names to profiles dropdown
     const profileEntry = spawn("option");
     profileEntry.innerText = profile.name;
     profileEntry.setAttribute("value", profile.name);
@@ -67,14 +75,15 @@ function renderProfileList(profile) {
     availableProfiles.push(profile); //stores object in global scoped array for use elsewhere.   
 }
 
-function swapFavoritesByProfile(string, array){
-    
+function learnProfileFavorites(string, array){
+    //this function gets the active profile's favorites from profile object and delivers them to API GET
     const activeProfile = array.find(object => object.name === string);   
     console.log(activeProfile);
     activeProfile.favorites.forEach(getProfileFavoriteFromAPI) 
 }
 
-function getProfileFavoriteFromAPI(string) {    
+function getProfileFavoriteFromAPI(string) { 
+    //this function takes in favorite id values and searches the API to return renderable brewery objects.
     // console.log(string)
     fetch(`https://api.openbrewerydb.org/breweries/${string}`)
     .then(resp => resp.json())
@@ -82,7 +91,7 @@ function getProfileFavoriteFromAPI(string) {
 }
 
 function renderDetails (object){
-
+    //renders details of selected search result or favorite from favorite list
     // console.log(object)
     const detailResults = hook('details');
 
@@ -95,6 +104,7 @@ function renderDetails (object){
 }
 
 function renderRandom(){
+    //renders a random brewery from the API on page load
     fetch("https://api.openbrewerydb.org/breweries/random")
     .then(resp => resp.json())
     .then(data => renderDetails(data[0]))
