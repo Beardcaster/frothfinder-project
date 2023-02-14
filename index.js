@@ -16,9 +16,13 @@ hook("search-form").addEventListener('submit', e => {
 })
 
 //event listener for changing selection in profile dropdown
+//if create profile is selected, initiate create profile
 hook("profile-select").addEventListener('change',  (e) => {
     const currentProfile = e.target.value;
-    learnProfileFavorites(currentProfile, availableProfiles);
+    if(currentProfile === "create-new"){
+        addProfile();
+    }
+    else {learnProfileFavorites(currentProfile, availableProfiles);}    
 })
 
 //event listener for clicking favorite button
@@ -26,9 +30,9 @@ hook("favorite-button").addEventListener('click', () => {
     renderFavorite(currentBrewery);
 })
 
-hook("create-profile").addEventListener('click', () => {
-    addProfile();
-})
+// hook("create-profile").addEventListener('click', () => {
+//     addProfile();
+// })
 
 function initiateSearch(query, searchValue, perPage) {
 //initiates search of API
@@ -86,17 +90,19 @@ function renderProfileList(profile) {
 }
 
 function addProfile() {
-    let profileName = prompt("Please enter your name.", "new user")
+
+    let profileName = prompt("Please enter your name (15 character max).", "new user")
+
+    if(checkProfileNameValid(profileName) === false) {
+        console.log("invalid profile name")
+        return;
+    }
 
     let newProfile = {
         name: profileName,
         favorites: []
     }
-    if( newProfile.name === null && newProfile.name != ' ' || newProfile.name || "new user") {
-        console.log("enter a valid value")
-        return;
-    }
-    
+
     fetch("http://localhost:3000/profiles/", {
         method:"POST",
         headers: {
@@ -137,8 +143,6 @@ function renderFavorite(object){
     fav.textContent = object.name;
     fav.classList = "favorite"
 
-    debugger
-
     document.querySelector('#favorite-list').append(fav);
 
     fav.addEventListener('click', e => {
@@ -157,18 +161,12 @@ function renderDetails (object){
     hook("phone").innerText = `Phone: ${object.phone}`;
     hook("url-container").innerText = `${object.website_url}`;
     hook("anchor").setAttribute("href", `${object.website_url}`)
+    hook("anchor").setAttribute("target", "_blank")
     hook("street").innerText = `${object.street}`
     hook("city-state-zip").innerText = `${object.city}, ${object.state} ${object.postal_code}`
     
     currentBrewery = object;
 }
-
-
-// hook("favorite-button").addEventListener('click', () => {
-//     const fav = spawn('li');
-//     fav.textContent = currentBrewery.name;
-//     document.querySelector('#favorites-container').append(fav);
-// })
 
 function renderRandom(){
     //renders a random brewery from the API on page load
@@ -179,6 +177,22 @@ function renderRandom(){
 
 function clearFavoritesList() {    
     hook("favorite-list").innerHTML = '';
+}
+
+function checkProfileNameValid(string) {
+
+    const invalidResponses = ['new user', 'Create Profile', 'create-profile'];
+
+    if(string === null || string === undefined ||string.length > 15){
+        return false;
+    }
+    else if(invalidResponses.includes(string) === true){
+        return false;
+    }
+    else if(string.trim().length === 0) {
+        return false;
+    }
+    else {return true}
 }
 
 ///////////////////////////////////////////
