@@ -26,6 +26,10 @@ hook("favorite-button").addEventListener('click', () => {
     renderFavorite(currentBrewery);
 })
 
+hook("create-profile").addEventListener('click', () => {
+    addProfile();
+})
+
 function initiateSearch(query, searchValue, perPage) {
 //initiates search of API
     if(searchValue.length === 0){
@@ -81,14 +85,30 @@ function renderProfileList(profile) {
     availableProfiles.push(profile); //stores object in global scoped array for use elsewhere.   
 }
 
-function addProfile(object) {
-    //PATCH NEW PROFILE OBJECT TO DB.JSON
-    //RENDER NEW PROFILE ON OBJECT
+function addProfile() {
+    let profileName = prompt("Please enter your name.", "new user")
+
+    let newProfile = {
+        name: profileName,
+        favorites: []
+    }
+    
+    fetch("http://localhost:3000/profiles/", {
+        method:"POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+            },
+        body: JSON.stringify(newProfile)
+    })
+    .then(resp => resp.json())
+
+    renderProfileList(newProfile);
 }
 
 function updateProfileFavorites (object) {
     //DETERMINE CURRENT PROFILE
-    //MAKE POST TO CURRENT PROFILE UPDATING FAVORITES LIST
+    //MAKE POST TO CURRENT PROFILE UPDATING FAVORITES LIST , THIS MAY NEED TO BE A PATCH Favorites: [ string of arrays here ]
 }
 
 function learnProfileFavorites(string, array){

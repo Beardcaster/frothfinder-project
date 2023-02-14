@@ -1,33 +1,42 @@
 {
-    "profiles": [
-        {
-            "name": "Jayson",
-            "favorites": [
-                "zwei-brewing-co-fort-collins",
-                "funkwerks-fort-collins"
-            ]
-        },
-        {
-            "name": "Dillon",
-            "favorites": [
-                "funkwerks-fort-collins",
-                "jessup-farm-barrel-house-fort-collins"
-            ]
-        },
-        {
-            "name": "Bob",
-            "favorites": [
-                "coopersmiths-pub-and-brewing-fort-collins",
-                "intersect-brewing-fort-collins"
-            ]
-        },
-        {
-            "name": "Kelsey",
-            "favorites": [
-                "prost-brewing-fort-collins-fort-collins",
-                "odell-brewing-co-fort-collins",
-                "funkwerks-fort-collins"
-            ]
-        }
-    ]
+  "profiles": [
+    {
+      "name": "Jayson",
+      "favorites": [
+        "zwei-brewing-co-fort-collins",
+        "funkwerks-fort-collins"
+      ],
+      "id": 1
+    },
+    {
+      "name": "Dillon",
+      "favorites": [
+        "funkwerks-fort-collins",
+        "jessup-farm-barrel-house-fort-collins"
+      ],
+      "id": 2
+    },
+    {
+      "name": "Bob",
+      "favorites": [
+        "coopersmiths-pub-and-brewing-fort-collins",
+        "intersect-brewing-fort-collins"
+      ],
+      "id": 3
+    },
+    {
+      "name": "Kelsey",
+      "favorites": [
+        "prost-brewing-fort-collins-fort-collins",
+        "odell-brewing-co-fort-collins",
+        "funkwerks-fort-collins"
+      ],
+      "id": 4
+    },
+    {
+      "name": "Not Jayson",
+      "favorites": [],
+      "id": 5
+    }
+  ]
 }
