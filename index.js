@@ -137,6 +137,8 @@ function renderFavorite(object){
     fav.textContent = object.name;
     fav.classList = "favorite"
 
+    debugger
+
     document.querySelector('#favorite-list').append(fav);
 
     fav.addEventListener('click', e => {
@@ -161,11 +163,11 @@ function renderDetails (object){
 }
 
 
-hook("favorite-button").addEventListener('click', () => {
-    const fav = spawn('li');
-    fav.textContent = currentBrewery.name;
-    document.querySelector('#favorites-container').append(fav);
-})
+// hook("favorite-button").addEventListener('click', () => {
+//     const fav = spawn('li');
+//     fav.textContent = currentBrewery.name;
+//     document.querySelector('#favorites-container').append(fav);
+// })
 
 function renderRandom(){
     //renders a random brewery from the API on page load
