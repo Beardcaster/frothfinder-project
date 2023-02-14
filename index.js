@@ -1,5 +1,4 @@
 //global variables
-// tacos
 const availableProfiles = [];
 let currentBrewery;
 
@@ -138,8 +137,6 @@ function renderFavorite(object){
     fav.textContent = object.name;
     fav.classList = "favorite"
 
-    debugger
-
     document.querySelector('#favorite-list').append(fav);
 
     fav.addEventListener('click', e => {
@@ -158,6 +155,7 @@ function renderDetails (object){
     hook("phone").innerText = `Phone: ${object.phone}`;
     hook("url-container").innerText = `${object.website_url}`;
     hook("anchor").setAttribute("href", `${object.website_url}`)
+    hook("anchor").setAttribute("target", "_blank")
     hook("street").innerText = `${object.street}`
     hook("city-state-zip").innerText = `${object.city}, ${object.state} ${object.postal_code}`
     
