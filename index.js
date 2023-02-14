@@ -92,6 +92,10 @@ function addProfile() {
         name: profileName,
         favorites: []
     }
+    if( newProfile.name === null && newProfile.name != ' ' || newProfile.name || "new user") {
+        console.log("enter a valid value")
+        return;
+    }
     
     fetch("http://localhost:3000/profiles/", {
         method:"POST",
