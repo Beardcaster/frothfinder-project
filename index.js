@@ -145,6 +145,7 @@ function renderFavorite(object){
         renderDetails(object)
         animateSelect(fav)
     })
+    currentBrewery = object;
 }
 
 function renderDetails (object){
