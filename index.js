@@ -16,9 +16,13 @@ hook("search-form").addEventListener('submit', e => {
 })
 
 //event listener for changing selection in profile dropdown
+//if create profile is selected, initiate create profile
 hook("profile-select").addEventListener('change',  (e) => {
     const currentProfile = e.target.value;
-    learnProfileFavorites(currentProfile, availableProfiles);
+    if(currentProfile === "create-new"){
+        addProfile();
+    }
+    else {learnProfileFavorites(currentProfile, availableProfiles);}    
 })
 
 //event listener for clicking favorite button
@@ -26,9 +30,9 @@ hook("favorite-button").addEventListener('click', () => {
     renderFavorite(currentBrewery);
 })
 
-hook("create-profile").addEventListener('click', () => {
-    addProfile();
-})
+// hook("create-profile").addEventListener('click', () => {
+//     addProfile();
+// })
 
 function initiateSearch(query, searchValue, perPage) {
 //initiates search of API
@@ -86,17 +90,19 @@ function renderProfileList(profile) {
 }
 
 function addProfile() {
+
     let profileName = prompt("Please enter your name.", "new user")
+
+    if(checkProfileNameValid(profileName) === false) {
+        console.log("invalid profile name")
+        return;
+    }
 
     let newProfile = {
         name: profileName,
         favorites: []
     }
-    if( newProfile.name === null && newProfile.name != ' ' || newProfile.name || "new user") {
-        console.log("enter a valid value")
-        return;
-    }
-    
+
     fetch("http://localhost:3000/profiles/", {
         method:"POST",
         headers: {
@@ -171,6 +177,22 @@ function renderRandom(){
 
 function clearFavoritesList() {    
     hook("favorite-list").innerHTML = '';
+}
+
+function checkProfileNameValid(string) {
+
+    const invalidResponses = ['new user', 'Create Profile', 'create-profile'];
+
+    if(string === null || string === undefined){
+        return false;
+    }
+    else if(invalidResponses.includes(string) === true){
+        return false;
+    }
+    else if(string.trim().length === 0) {
+        return false;
+    }
+    else {return true}
 }
 
 ///////////////////////////////////////////
