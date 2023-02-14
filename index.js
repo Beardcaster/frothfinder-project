@@ -91,7 +91,7 @@ function renderProfileList(profile) {
 
 function addProfile() {
 
-    let profileName = prompt("Please enter your name.", "new user")
+    let profileName = prompt("Please enter your name (15 character max).", "new user")
 
     if(checkProfileNameValid(profileName) === false) {
         console.log("invalid profile name")
@@ -183,7 +183,7 @@ function checkProfileNameValid(string) {
 
     const invalidResponses = ['new user', 'Create Profile', 'create-profile'];
 
-    if(string === null || string === undefined){
+    if(string === null || string === undefined ||string.length > 15){
         return false;
     }
     else if(invalidResponses.includes(string) === true){
