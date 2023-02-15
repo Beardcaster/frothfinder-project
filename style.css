@@ -36,60 +36,49 @@ html {
 body {
   min-height: 100%;
   min-width: 100%;
-  background-size: cover;
-  /* background: linear-gradient(50deg, rgba(240,165,0,1) 0%, rgba(27,26,23,1) 73%);  */
-}
-
-#profiles {
-  position: absolute;
-  top: 40px;
-  right: 15px;
 }
 
 .person-logo{
   width: 90px;
   position: absolute;
-  top: 30px;
+  top: 60px;
+  right: 30px;
+}
+
+#prof-list {
+  position: absolute;
+  top: 160px; 
   right: 20px;
-}
-
-#profile-select{
-  display: block;
-  border-style: solid;
-}
-
-.initial-results {
-  float: left;
-  width: 50%;
-}
-
-#result-list ul {
-  list-style-type: none;
-  width: 500px;
-}
-
-#listed-details {
-list-style-type: none;
-width: 500px;
-}
-
+  color: white;
+  cursor: pointer;
+  list-style: none;
+} 
 .search-res {
   cursor: pointer;
 }
-
-#favorites-container {
-  float: right;
-}
-
 .favorite {
   cursor: pointer;
 }
 
-#prof-list {
-  position:absolute;
-  top: 125px; 
-  right: 15px;
+#search-container {
+  position: relative;
+  top: -450px;
   color: white;
-  cursor: pointer;
-  list-style: none;
+  padding-left: 40px;
+}
+
+#active-profile-name{
+  text-align: right;
+  position: relative;
+  top: -560px;
+  right: 65px;
+  color: white;
+  z-index: 10;
+}
+
+.search-results h2{
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  margin-top: -300px;
 }

@@ -19,9 +19,9 @@ hook("favorite-button").addEventListener('click', () => {
     renderFavorite(currentBrewery);
 })
 
-// hook("create-profile").addEventListener('click', () => {
-//     addProfile();
-// })
+hook("create-profile").addEventListener('click', () => {
+    addProfile();
+})
 
 hook("prof-button").addEventListener('click', () => {
     const profileList = hook("prof-list");
@@ -97,7 +97,7 @@ function renderProfileList(profile) {
 
     profileEntry.addEventListener('click', (e)=> {
         const currentProfile = e.target.innerText
-        // console.log(currentProfile)
+        console.log(currentProfile)
         learnProfileFavorites(currentProfile, availableProfiles)
         renderActiveProfile(currentProfile);
         hook("prof-list").style.display = "none"

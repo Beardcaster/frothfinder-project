@@ -13,7 +13,7 @@
         </div>
     </head>
     <body>
-        <div id="top-bar">
+        <!-- <div id="top-bar"> -->
             <div id="search-container">
                 <label for="search-criteria">Search By:</label> 
                 <select name ="options" id="search-dropdown" class="navbar">
@@ -43,18 +43,19 @@
                          <li id="blank">-----------</li>                        
                     </div>
                 </div>
-            </div> 
+            <!-- </div>  -->
             <div id="active-profile-container">
                 <h4 id="active-profile-name">None</h4>
-            </div
+            </div>
         </div>
         <div id="results-container">
-            <div class="initial-results" id="result-list">
+            <div class="search-results" id="result-list">
                 <h2>Search Results</h2>
                     <ul id="search-result" class="results"></ul>
             </div>
         </div>
-        <div class="initial-results">
+        <div id="detail-results">
+            <div class="search-results">
             <h2>Details</h2>
                 <div id="details" class="results">
                     <h4 id="brewery"></h4>
@@ -66,12 +67,13 @@
                     <button id="favorite-button">Favorite!</button>
                     <div></div>
                 </div>
+            </div>
         </div>
-            <div class="initial-results" id="favorites-container"> 
+            <!-- <div class="initial-results" id="favorites-container"> 
                 <h2>Favorites</h2>
                 <div id="favorite-list">
             </div>
-            </div>
+            </div> -->
         </div>
         </body>
     </html>
