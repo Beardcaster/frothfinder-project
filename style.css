@@ -51,8 +51,6 @@ body {
   position: absolute;
   top: 30px;
   right: 20px;
-  background-color: grey;
-  border-radius: 50px;
 }
 
 #profile-select{
@@ -85,4 +83,13 @@ width: 500px;
 
 .favorite {
   cursor: pointer;
+}
+
+#prof-list {
+  position:absolute;
+  top: 125px; 
+  right: 15px;
+  color: white;
+  cursor: pointer;
+  list-style: none;
 }

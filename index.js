@@ -15,13 +15,6 @@ hook("search-form").addEventListener('submit', e => {
     initiateSearch(query, searchValue, perPage);    
 })
 
-//event listener for changing selection in profile dropdown
-hook("profile-select").addEventListener('change',  (e) => {
-    const currentProfile = e.target.value;
-    learnProfileFavorites(currentProfile, availableProfiles);
-})
-
-//event listener for clicking favorite button
 hook("favorite-button").addEventListener('click', () => {
     renderFavorite(currentBrewery);
 })
@@ -29,6 +22,25 @@ hook("favorite-button").addEventListener('click', () => {
 hook("create-profile").addEventListener('click', () => {
     addProfile();
 })
+
+hook("prof-button").addEventListener('click', () => {
+    const profileList = hook("prof-list");
+    if(profileList.style.display === "none") {
+        profileList.style.display = "inline-block";
+    }  else { profileList.style.display = "none"}  
+})
+
+hook("prof-button").addEventListener('mouseover', (e) => {
+    e.target.setAttribute("src", "./img/profile-select-highlight.png")
+    })
+
+hook("prof-button").addEventListener('mouseleave', (e) => {
+    e.target.setAttribute("src", "./img/profile-select-norm.png")
+    })
+
+/////////////////////////////////////
+////////////FUNCTIONS////////////////
+/////////////////////////////////////
 
 function initiateSearch(query, searchValue, perPage) {
 //initiates search of API
@@ -72,32 +84,43 @@ function checkProfiles() {
     fetch("http://localhost:3000/profiles")
     .then(resp => resp.json())
     .then(data => {
-        data.forEach(renderProfileList),
-        data.forEach(profileClick);
+        data.forEach(renderProfileList);
     })
 }
 
 function renderProfileList(profile) {
     //adds valid profile names to profiles dropdown
-    const profileEntry = spawn("option");
+    const profileEntry = spawn("li");
     profileEntry.innerText = profile.name;
-    profileEntry.setAttribute("value", profile.name);
-    hook("profile-select").appendChild(profileEntry);
-    availableProfiles.push(profile); //stores object in global scoped array for use elsewhere.   
+    profileEntry.value = profile.name    
+    availableProfiles.push(profile);
+
+    profileEntry.addEventListener('click', (e)=> {
+        const currentProfile = e.target.innerText
+        // console.log(currentProfile)
+        learnProfileFavorites(currentProfile, availableProfiles)
+        renderActiveProfile(currentProfile);
+        hook("prof-list").style.display = "none"
+    })
+
+    hook("prof-list").appendChild(profileEntry);    
 }
 
+
 function addProfile() {
-    let profileName = prompt("Please enter your name.", "new user")
+
+    let profileName = prompt("Please enter your name (15 character max).", "new user")
+
+    if(checkProfileNameValid(profileName) === false) {
+        console.log("invalid profile name")
+        return;
+    }
 
     let newProfile = {
         name: profileName,
         favorites: []
     }
-    if( newProfile.name === null && newProfile.name != ' ' || newProfile.name || "new user") {
-        console.log("enter a valid value")
-        return;
-    }
-    
+
     fetch("http://localhost:3000/profiles/", {
         method:"POST",
         headers: {
@@ -130,6 +153,10 @@ function getProfileFavoriteFromAPI(string) {
     fetch(`https://api.openbrewerydb.org/breweries/${string}`)
     .then(resp => resp.json())
     .then(data => renderFavorite(data))
+}
+
+function renderActiveProfile(string) {
+    hook("active-profile-name").innerText = string;
 }
 
 function renderFavorite(object){
@@ -173,8 +200,24 @@ function clearFavoritesList() {
     hook("favorite-list").innerHTML = '';
 }
 
+function checkProfileNameValid(string) {
+
+    const invalidResponses = ['new user', 'Create Profile', 'create-profile'];
+
+    if(string === null || string === undefined ||string.length > 15){
+        return false;
+    }
+    else if(invalidResponses.includes(string) === true){
+        return false;
+    }
+    else if(string.trim().length === 0) {
+        return false;
+    }
+    else {return true}
+}
+
 ///////////////////////////////////////////
-///////////KEYWORD FUNCTIONS///////////////
+///////////HELPER FUNCTIONS///////////////
 ///////////////////////////////////////////
 
 function hook (string) {
@@ -189,13 +232,5 @@ function grab (string) {
     return document.querySelector(`${string}`) //let me know if these things are helpful
 }
 
-function profileClick(profile) {
-    hook('unique-profile').addEventListener('click', (e) => {
-        const userProfile = document.querySelector('.user-info');
-        const userName = document.createElement('h2');
-        userName.innerText = profile.name;
-        userProfile.append(userName)
-    })
-}
 
 // test
