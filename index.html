@@ -6,7 +6,9 @@
         <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/988/988934.png">
         <script defer src = index.js></script>
         <div class="header">
-            <h1>Froth Finder</h1>
+            <h1>
+                <img class="page-logo" src="frothfinder.png" alt="logo">
+            </h1>
                 <p>Find your next favorite Brewery</p>
         </div>
     </head>
@@ -39,7 +41,17 @@
                     <option value="none" selected>None</option>                    
                 </select>
                 <button id="create-profile">Create Profile</button>
-            </div>                     
+            </div> 
+            <div id="unique-profile" class="profile-dropdown">
+                <img src="Beer-profile.png" class="person-logo">
+                <div class="sub-menu-wrap">
+                    <div class="sub-menu">
+                        <ul class="user-info">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>                    
         </div>
         <div id="results-container">
             <div class="initial-results" id="result-list">

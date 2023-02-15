@@ -72,7 +72,8 @@ function checkProfiles() {
     fetch("http://localhost:3000/profiles")
     .then(resp => resp.json())
     .then(data => {
-        data.forEach(renderProfileList);
+        data.forEach(renderProfileList),
+        data.forEach(profileClick);
     })
 }
 
@@ -137,8 +138,6 @@ function renderFavorite(object){
     fav.textContent = object.name;
     fav.classList = "favorite"
 
-    debugger
-
     document.querySelector('#favorite-list').append(fav);
 
     fav.addEventListener('click', e => {
@@ -162,13 +161,6 @@ function renderDetails (object){
     
     currentBrewery = object;
 }
-
-
-// hook("favorite-button").addEventListener('click', () => {
-//     const fav = spawn('li');
-//     fav.textContent = currentBrewery.name;
-//     document.querySelector('#favorites-container').append(fav);
-// })
 
 function renderRandom(){
     //renders a random brewery from the API on page load
@@ -197,7 +189,11 @@ function grab (string) {
     return document.querySelector(`${string}`) //let me know if these things are helpful
 }
 
-
-
-
-
+function profileClick(profile) {
+    hook('unique-profile').addEventListener('click', (e) => {
+        const userProfile = document.querySelector('.user-info');
+        const userName = document.createElement('h2');
+        userName.innerText = profile.name;
+        userProfile.append(userName)
+    })
+}
