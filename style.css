@@ -13,16 +13,24 @@ html {
 }
 
 .header {
-  background-color: black;
-  color: white;
+  background-color: #000;
   padding-top: 60px;
   padding-bottom: 60px;
 }
 
-h1 {
-  font-size: 50px;
-  color: #FFA500;
+.page-logo{
+  width: 400px;
+}
+
+.header h1 {
   text-align: center;
+}
+
+.header p{
+  font-size: 25px;
+  color: #DA5510;
+  text-align: center;
+  padding-top: -10px;
 }
 
 body {
@@ -38,9 +46,17 @@ body {
   right: 15px;
 }
 
-/* .profile-button{
+.person-logo{
+  width: 90px;
+  position: absolute;
+  top: 30px;
+  right: 20px;
+}
 
-} */
+#profile-select{
+  display: block;
+  border-style: solid;
+}
 
 .initial-results {
   float: left;
@@ -67,4 +83,13 @@ width: 500px;
 
 .favorite {
   cursor: pointer;
+}
+
+#prof-list {
+  position:absolute;
+  top: 125px; 
+  right: 15px;
+  color: white;
+  cursor: pointer;
+  list-style: none;
 }

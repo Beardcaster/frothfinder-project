@@ -15,17 +15,6 @@ hook("search-form").addEventListener('submit', e => {
     initiateSearch(query, searchValue, perPage);    
 })
 
-//event listener for changing selection in profile dropdown
-//if create profile is selected, initiate create profile
-hook("profile-select").addEventListener('change',  (e) => {
-    const currentProfile = e.target.value;
-    if(currentProfile === "create-new"){
-        addProfile();
-    }
-    else {learnProfileFavorites(currentProfile, availableProfiles);}    
-})
-
-//event listener for clicking favorite button
 hook("favorite-button").addEventListener('click', () => {
     renderFavorite(currentBrewery);
 })
@@ -33,6 +22,25 @@ hook("favorite-button").addEventListener('click', () => {
 // hook("create-profile").addEventListener('click', () => {
 //     addProfile();
 // })
+
+hook("prof-button").addEventListener('click', () => {
+    const profileList = hook("prof-list");
+    if(profileList.style.display === "none") {
+        profileList.style.display = "inline-block";
+    }  else { profileList.style.display = "none"}  
+})
+
+hook("prof-button").addEventListener('mouseover', (e) => {
+    e.target.setAttribute("src", "./img/profile-select-highlight.png")
+    })
+
+hook("prof-button").addEventListener('mouseleave', (e) => {
+    e.target.setAttribute("src", "./img/profile-select-norm.png")
+    })
+
+/////////////////////////////////////
+////////////FUNCTIONS////////////////
+/////////////////////////////////////
 
 function initiateSearch(query, searchValue, perPage) {
 //initiates search of API
@@ -82,12 +90,22 @@ function checkProfiles() {
 
 function renderProfileList(profile) {
     //adds valid profile names to profiles dropdown
-    const profileEntry = spawn("option");
+    const profileEntry = spawn("li");
     profileEntry.innerText = profile.name;
-    profileEntry.setAttribute("value", profile.name);
-    hook("profile-select").appendChild(profileEntry);
-    availableProfiles.push(profile); //stores object in global scoped array for use elsewhere.   
+    profileEntry.value = profile.name    
+    availableProfiles.push(profile);
+
+    profileEntry.addEventListener('click', (e)=> {
+        const currentProfile = e.target.innerText
+        // console.log(currentProfile)
+        learnProfileFavorites(currentProfile, availableProfiles)
+        renderActiveProfile(currentProfile);
+        hook("prof-list").style.display = "none"
+    })
+
+    hook("prof-list").appendChild(profileEntry);    
 }
+
 
 function addProfile() {
 
@@ -135,6 +153,10 @@ function getProfileFavoriteFromAPI(string) {
     fetch(`https://api.openbrewerydb.org/breweries/${string}`)
     .then(resp => resp.json())
     .then(data => renderFavorite(data))
+}
+
+function renderActiveProfile(string) {
+    hook("active-profile-name").innerText = string;
 }
 
 function renderFavorite(object){
@@ -196,7 +218,7 @@ function checkProfileNameValid(string) {
 }
 
 ///////////////////////////////////////////
-///////////KEYWORD FUNCTIONS///////////////
+///////////HELPER FUNCTIONS///////////////
 ///////////////////////////////////////////
 
 function hook (string) {
@@ -212,6 +234,4 @@ function grab (string) {
 }
 
 
-
-
-
+// test
