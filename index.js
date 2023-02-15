@@ -19,9 +19,9 @@ hook("favorite-button").addEventListener('click', () => {
     renderFavorite(currentBrewery);
 })
 
-hook("create-profile").addEventListener('click', () => {
-    addProfile();
-})
+// hook("create-profile").addEventListener('click', () => {
+//     addProfile();
+// })
 
 hook("prof-button").addEventListener('click', () => {
     const profileList = hook("prof-list");
@@ -183,6 +183,7 @@ function renderDetails (object){
     hook("phone").innerText = `Phone: ${object.phone}`;
     hook("url-container").innerText = `${object.website_url}`;
     hook("anchor").setAttribute("href", `${object.website_url}`)
+    hook("anchor").setAttribute("target", "_blank")
     hook("street").innerText = `${object.street}`
     hook("city-state-zip").innerText = `${object.city}, ${object.state} ${object.postal_code}`
     
