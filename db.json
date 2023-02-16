@@ -4,7 +4,8 @@
       "name": "Jayson",
       "favorites": [
         "zwei-brewing-co-fort-collins",
-        "funkwerks-fort-collins"
+        "funkwerks-fort-collins",
+        "mountain-cowboy-brewing-company-frederick"
       ],
       "id": 1
     },
@@ -29,9 +30,17 @@
       "favorites": [
         "prost-brewing-fort-collins-fort-collins",
         "odell-brewing-co-fort-collins",
-        "funkwerks-fort-collins"
+        "funkwerks-fort-collins",
+        "mountain-cowboy-brewing-company-frederick"
       ],
       "id": 4
+    },
+    {
+      "name": "Henry",
+      "favorites": [
+        "mountain-cowboy-brewing-company-frederick"
+      ],
+      "id": 5
     }
   ]
 }
