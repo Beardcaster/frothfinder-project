@@ -43,3 +43,11 @@
   border-width: 10px;
   border-radius: 50px;
 }
+
+#prof-list {
+  cursor: pointer;
+}
+
+#favorite-list {
+  cursor: pointer;
+}

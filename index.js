@@ -7,7 +7,10 @@ let activeProfile;
 renderRandom();
 checkProfiles();
 
-//event listener for submitting search
+////////////////////////////////
+//////CORE EVENT LISTENERS//////
+////////////////////////////////
+
 hook("search-form").addEventListener('submit', e => {
     e.preventDefault();
     const query = hook("search-dropdown").value; //value of dropdown to query to pass into get
@@ -50,7 +53,6 @@ hook("prof-button").addEventListener('mouseleave', (e) => {
 /////////////////////////////////////
 
 function initiateSearch(query, searchValue, perPage) {
-//initiates search of API
     if(searchValue.length === 0){
         console.log('no search value entered');
         return;
@@ -63,12 +65,9 @@ function initiateSearch(query, searchValue, perPage) {
         result.forEach(renderResults);
         hook("search-form").reset();        
     })
-    // .catch(console.log("search failed")); //this catch goes off even if search successful.
 }
 
 function renderResults(object) {
-    //renders list of results
-    //what other results should be rendered to the dom in this area. phone? city? address?
     const result = spawn("li");
     result.innerText = object.name;
     result.classList = ("search-res");
@@ -81,7 +80,6 @@ function renderResults(object) {
 }
 
 function checkProfiles() {
-    //checks the mock server for valid profiles.
     fetch("http://localhost:3000/profiles")
     .then(resp => resp.json())
     .then(data => {
@@ -90,7 +88,6 @@ function checkProfiles() {
 }
 
 function renderProfileList(profile) {
-    //adds valid profile names to profiles dropdown
     const profileEntry = spawn("li");
     profileEntry.innerText = profile.name;
     profileEntry.value = profile.name  ;  
@@ -139,22 +136,36 @@ function addProfile() {
     renderProfileList(newProfile);
 }
 
-function updateProfileFavorites (object) {
-    //DETERMINE CURRENT PROFILE
-    //MAKE POST TO CURRENT PROFILE UPDATING FAVORITES LIST , THIS MAY NEED TO BE A PATCH Favorites: [ string of arrays here ]
+function confirmFavorites(currentBrewery) {
+    const currentProfileId = activeProfile.id;
+    console.log(activeProfile);
+    console.log(currentBrewery.id);
+
+    if(activeProfile.favorites.includes(currentBrewery.id)) {
+        console.log("duplicate found");
+    } 
+    else {
+        activeProfile.favorites.push(currentBrewery.id)
+        console.log(activeProfile);
+        fetch(`http://localhost:3000/profiles/${currentProfileId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json"
+            },
+            body: JSON.stringify(activeProfile)
+        })
+        .then(response => response.json())
+    }
 }
 
 function learnProfileFavorites(string, array){
-    //this function gets the active profile's favorites from profile object and delivers them to API GET
-    activeProfile = array.find(object => object.name === string);   
-    // console.log(activeProfile);
+    activeProfile = array.find(object => object.name === string);
     clearFavoritesList()
     activeProfile.favorites.forEach(getProfileFavoriteFromAPI) 
 }
 
-function getProfileFavoriteFromAPI(string) { 
-    //this function takes in favorite id values and searches the API to return renderable brewery objects.
-    // console.log(string)
+function getProfileFavoriteFromAPI(string) {
     fetch(`https://api.openbrewerydb.org/breweries/${string}`)
     .then(resp => resp.json())
     .then(data => renderFavorite(data))
@@ -165,7 +176,6 @@ function renderActiveProfile(string) {
 }
 
 function renderFavorite(object){
-    //this function renders an item to the favorites list.
     const fav = spawn('li');
     fav.textContent = object.name;
     fav.classList = "favorite"
@@ -174,16 +184,11 @@ function renderFavorite(object){
     
     fav.addEventListener('click', e => {
         renderDetails(object)
-        animateSelect(fav)
-        // console.log('click');
+        animateSelect(fav);
     })
-    // currentBrewery = object;
 }
 
 function renderDetails (object){
-    //renders details of selected search result or favorite from favorite list
-    // console.log(object)
-    const detailResults = hook('details');
     
     hook("brewery").innerText = object.name;
     hook("phone").innerText = `Phone: ${object.phone}`;
@@ -197,7 +202,6 @@ function renderDetails (object){
 }
 
 function animateSelect(string) {
-    //animates selected search result with quick flash of blue can change later to match asthetic
     string.style.color = "blue"
     setTimeout(() => string.style.color = "", 100)
 }
@@ -210,7 +214,6 @@ function highlightOnMouseover(element) {
 }
 
 function renderRandom(){
-    //renders a random brewery from the API on page load
     fetch("https://api.openbrewerydb.org/breweries/random")
     .then(resp => resp.json())
     .then(data => renderDetails(data[0]))
@@ -250,27 +253,4 @@ function spawn (string) {
 
 function grab (string) {
     return document.querySelector(`${string}`) //let me know if these things are helpful
-}
-
-function confirmFavorites(currentBrewery) {
-    const currentProfileId = activeProfile.id;
-    console.log(activeProfile);
-    console.log(currentBrewery.id);
-
-    if(activeProfile.favorites.includes(currentBrewery.id)) {
-        console.log("duplicate found");
-    } 
-    else {
-        activeProfile.favorites.push(currentBrewery.id)
-        console.log(activeProfile);
-        fetch(`http://localhost:3000/profiles/${currentProfileId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json"
-            },
-            body: JSON.stringify(activeProfile)
-        })
-        .then(response => response.json())
-    }
 }
