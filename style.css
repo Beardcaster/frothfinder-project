@@ -1,84 +1,45 @@
-html {
-  height: 100%;
-  width: 100%;
-  font-family: "Titillium Web", sans-serif;
-}
-
-.banner{
-  width: 100%;
-  height: 100vh;
-  /* background-image: linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),url(Background.jpg); */
-  background-size: cover;
-  background-position: center;
-}
-
-.header {
-  background-color: #000;
-  padding-top: 60px;
-  padding-bottom: 60px;
-}
-
-.page-logo{
-  width: 400px;
-}
-
-.header h1 {
-  text-align: center;
-}
-
-.header p{
-  font-size: 25px;
+.slogan {
   color: #DA5510;
+  font-size: 25px;
+  padding-top: 10px;
+}
+
+.l-25{
+  left: 25px;
+}
+
+#result-list h2{
   text-align: center;
-  padding-top: -10px;
+  padding-bottom: 10px;
+  border-style: solid;
+  border-color: #DD0000;
+  border-width: 10px;
+  border-radius: 50px;
 }
 
-body {
-  min-height: 100%;
-  min-width: 100%;
-}
-
-.person-logo{
-  width: 90px;
-  position: absolute;
-  top: 60px;
-  right: 30px;
-}
-
-#prof-list {
-  position: absolute;
-  top: 160px; 
-  right: 20px;
-  color: white;
+#search-result{
   cursor: pointer;
+}
+
+#details-container h2 {
+  text-align: center;
+  padding-bottom: 10px;
+  border-style: solid;
+  border-color: #FFCC00;
+  border-width: 10px;
+  border-radius: 50px;
+}
+
+#listed-details li{
   list-style: none;
-} 
-.search-res {
-  cursor: pointer;
-}
-.favorite {
   cursor: pointer;
 }
 
-#search-container {
-  position: relative;
-  top: -450px;
-  color: white;
-  padding-left: 40px;
-}
-
-#active-profile-name{
-  text-align: right;
-  position: relative;
-  top: -560px;
-  right: 65px;
-  color: white;
-  z-index: 10;
-}
-
-.search-results h2{
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-  margin-top: -300px;
+#favorites-container h2{
+  text-align: center;
+  padding-bottom: 10px;
+  border-style: solid;
+  border-color: #FC7E10;
+  border-width: 10px;
+  border-radius: 50px;
 }

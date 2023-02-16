@@ -16,7 +16,8 @@ hook("search-form").addEventListener('submit', e => {
 })
 
 hook("favorite-button").addEventListener('click', () => {
-    renderFavorite(currentBrewery);
+    confirmFavorites(currentBrewery),
+    renderFavorite(currentBrewery)
 })
 
 hook("create-profile").addEventListener('click', () => {
@@ -170,6 +171,7 @@ function renderFavorite(object){
     fav.addEventListener('click', e => {
         renderDetails(object)
         animateSelect(fav)
+        // console.log('click');
     })
     currentBrewery = object;
 }
@@ -235,3 +237,19 @@ function grab (string) {
 
 
 // test
+
+//PATCH FAVORITES LIST
+function confirmFavorites(currentBrewery) {
+    console.log(currentBrewery);
+    fetch("http://localhost:3000/profiles", {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            favorites: currentBrewery.name
+        }),
+    })
+    .then(response => response.json());
+}
