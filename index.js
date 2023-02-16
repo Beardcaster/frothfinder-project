@@ -25,6 +25,11 @@ hook("create-profile").addEventListener('click', () => {
     addProfile();
 })
 
+hook("create-profile").addEventListener('mouseover', () => {
+    const createProfileOpt = hook("create-profile")
+    highlightOnMouseover(createProfileOpt);
+})
+
 hook("prof-button").addEventListener('click', () => {
     const profileList = hook("prof-list");
     if(profileList.style.display === "none") {
@@ -47,7 +52,7 @@ hook("prof-button").addEventListener('mouseleave', (e) => {
 function initiateSearch(query, searchValue, perPage) {
 //initiates search of API
     if(searchValue.length === 0){
-        console.log('no search value entered')
+        console.log('no search value entered');
         return;
     }
     
@@ -55,7 +60,7 @@ function initiateSearch(query, searchValue, perPage) {
     .then(resp => resp.json())
     .then(result => {   
         hook("search-result").innerHTML = "";    
-        result.forEach(renderResults)
+        result.forEach(renderResults);
         hook("search-form").reset();        
     })
     // .catch(console.log("search failed")); //this catch goes off even if search successful.
@@ -64,21 +69,15 @@ function initiateSearch(query, searchValue, perPage) {
 function renderResults(object) {
     //renders list of results
     //what other results should be rendered to the dom in this area. phone? city? address?
-    const result = spawn("li")
-    result.innerText = object.name
-    result.classList = ("search-res")
+    const result = spawn("li");
+    result.innerText = object.name;
+    result.classList = ("search-res");
     hook("search-result").appendChild(result);
 
     result.addEventListener('click', (e) => {
-        renderDetails(object)
-        animateSelect(result)
+        renderDetails(object);
+        animateSelect(result);
     })
-}
-
-function animateSelect(result) {
-    //animates selected search result with quick flash of blue can change later to match asthetic
-    result.style.color = "blue"
-    setTimeout(() => result.style.color = "black", 100)
 }
 
 function checkProfiles() {
@@ -94,46 +93,49 @@ function renderProfileList(profile) {
     //adds valid profile names to profiles dropdown
     const profileEntry = spawn("li");
     profileEntry.innerText = profile.name;
-    profileEntry.value = profile.name    
+    profileEntry.value = profile.name  ;  
     availableProfiles.push(profile);
-
+    
     profileEntry.addEventListener('click', (e)=> {
-        const currentProfile = e.target.innerText
-        console.log(currentProfile)
-        learnProfileFavorites(currentProfile, availableProfiles)
+        const currentProfile = e.target.innerText        
+        learnProfileFavorites(currentProfile, availableProfiles);
         renderActiveProfile(currentProfile);
-        hook("prof-list").style.display = "none"
-    })
+        hook("prof-list").style.display = "none"})
 
+    profileEntry.addEventListener('mouseover', (e) => {
+        element = e.target;
+        highlightOnMouseover(element);
+    })
+    
     hook("prof-list").appendChild(profileEntry);    
 }
 
 
 function addProfile() {
-
+    
     let profileName = prompt("Please enter your name (15 character max).", "new user")
-
+    
     if(checkProfileNameValid(profileName) === false) {
         console.log("invalid profile name")
         return;
     }
-
+    
     let newProfile = {
         name: profileName,
         favorites: [],
         id: availableProfiles.length + 1
     }
-
+    
     fetch("http://localhost:3000/profiles/", {
         method:"POST",
         headers: {
             "Content-Type": "application/json",
             Accept: "application/json"
-            },
+        },
         body: JSON.stringify(newProfile)
     })
     .then(resp => resp.json())
-
+    
     renderProfileList(newProfile);
 }
 
@@ -167,9 +169,9 @@ function renderFavorite(object){
     const fav = spawn('li');
     fav.textContent = object.name;
     fav.classList = "favorite"
-
+    
     document.querySelector('#favorite-list').append(fav);
-
+    
     fav.addEventListener('click', e => {
         renderDetails(object)
         animateSelect(fav)
@@ -182,7 +184,7 @@ function renderDetails (object){
     //renders details of selected search result or favorite from favorite list
     // console.log(object)
     const detailResults = hook('details');
-
+    
     hook("brewery").innerText = object.name;
     hook("phone").innerText = `Phone: ${object.phone}`;
     hook("url-container").innerText = `${object.website_url}`;
@@ -192,6 +194,19 @@ function renderDetails (object){
     hook("city-state-zip").innerText = `${object.city}, ${object.state} ${object.postal_code}`
     
     currentBrewery = object;
+}
+
+function animateSelect(string) {
+    //animates selected search result with quick flash of blue can change later to match asthetic
+    string.style.color = "blue"
+    setTimeout(() => string.style.color = "", 100)
+}
+
+function highlightOnMouseover(element) {
+    element.style.color = "#ffcc00"
+    element.addEventListener("mouseout", () => {
+        element.style.color = ""
+    })   
 }
 
 function renderRandom(){
@@ -206,18 +221,18 @@ function clearFavoritesList() {
 }
 
 function checkProfileNameValid(string) {
-
+    
     const invalidResponses = ['new user', 'Create Profile', 'create-profile'];
-
+    
     if(string === null || string === undefined ||string.length > 15){
-        return false;
-    }
+        return false;}
+
     else if(invalidResponses.includes(string) === true){
-        return false;
-    }
+        return false;}
+
     else if(string.trim().length === 0) {
-        return false;
-    }
+        return false;}
+
     else {return true}
 }
 
@@ -237,10 +252,6 @@ function grab (string) {
     return document.querySelector(`${string}`) //let me know if these things are helpful
 }
 
-
-// test
-
-//PATCH FAVORITES LIST
 function confirmFavorites(currentBrewery) {
     const currentProfileId = activeProfile.id;
     console.log(activeProfile);
