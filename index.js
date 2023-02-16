@@ -1,6 +1,7 @@
 //global variables
 const availableProfiles = [];
 let currentBrewery;
+let activeProfile;
 
 //functions to run on page load
 renderRandom();
@@ -16,7 +17,8 @@ hook("search-form").addEventListener('submit', e => {
 })
 
 hook("favorite-button").addEventListener('click', () => {
-    renderFavorite(currentBrewery);
+    confirmFavorites(currentBrewery),
+    renderFavorite(currentBrewery)
 })
 
 hook("create-profile").addEventListener('click', () => {
@@ -95,7 +97,6 @@ function renderProfileList(profile) {
     availableProfiles.push(profile);
     
     profileEntry.addEventListener('click', (e)=> {
-
         const currentProfile = e.target.innerText        
         learnProfileFavorites(currentProfile, availableProfiles);
         renderActiveProfile(currentProfile);
@@ -121,7 +122,8 @@ function addProfile() {
     
     let newProfile = {
         name: profileName,
-        favorites: []
+        favorites: [],
+        id: availableProfiles.length + 1
     }
     
     fetch("http://localhost:3000/profiles/", {
@@ -144,7 +146,7 @@ function updateProfileFavorites (object) {
 
 function learnProfileFavorites(string, array){
     //this function gets the active profile's favorites from profile object and delivers them to API GET
-    const activeProfile = array.find(object => object.name === string);   
+    activeProfile = array.find(object => object.name === string);   
     // console.log(activeProfile);
     clearFavoritesList()
     activeProfile.favorites.forEach(getProfileFavoriteFromAPI) 
@@ -173,8 +175,9 @@ function renderFavorite(object){
     fav.addEventListener('click', e => {
         renderDetails(object)
         animateSelect(fav)
+        // console.log('click');
     })
-    currentBrewery = object;
+    // currentBrewery = object;
 }
 
 function renderDetails (object){
@@ -247,4 +250,27 @@ function spawn (string) {
 
 function grab (string) {
     return document.querySelector(`${string}`) //let me know if these things are helpful
+}
+
+function confirmFavorites(currentBrewery) {
+    const currentProfileId = activeProfile.id;
+    console.log(activeProfile);
+    console.log(currentBrewery.id);
+
+    if(activeProfile.favorites.includes(currentBrewery.id)) {
+        console.log("duplicate found");
+    } 
+    else {
+        activeProfile.favorites.push(currentBrewery.id)
+        console.log(activeProfile);
+        fetch(`http://localhost:3000/profiles/${currentProfileId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json"
+            },
+            body: JSON.stringify(activeProfile)
+        })
+        .then(response => response.json())
+    }
 }
