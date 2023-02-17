@@ -19,6 +19,16 @@
       "name": "Kelsey",
       "favorites": [],
       "id": 4
+    },
+    {
+      "name": "Henry",
+      "favorites": [
+        "mountain-cowboy-brewing-company-frederick",
+        "third-window-brewing-santa-barbara",
+        "magpie-brewing-co-jeju-si",
+        "101-brewery-quilcene"
+      ],
+      "id": 5
     }
   ]
 }
