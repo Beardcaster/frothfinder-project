@@ -35,3 +35,12 @@ With a profile selected, you can click the "Favorite!" button under "Details" to
 Use of this profile feature requires hosting of a json-server watching the db.json file included in this repository. Currently
 all profile-based fetch requests are targetting "http://localhost:3000/profiles" or "http://localhost:3000/profiles/<profile id>".
 Without a connected server, the site will behave as normal, however, created profiles will be non-persistent.
+
+# code notes
+
+The JavaScript code for this project is organized as follows.
+
+-Global variables and functions to run on page load.
+-Core event listeners.
+-Functions loosely organized by relation to eachother.
+-Helper functions used to keep repetetive code down.
