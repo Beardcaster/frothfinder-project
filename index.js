@@ -13,15 +13,23 @@ checkProfiles();
 
 hook("search-form").addEventListener('submit', e => {
     e.preventDefault();
-    const query = hook("search-dropdown").value; //value of dropdown to query to pass into get
-    const perPage = hook("per-page").value; //per page dropdown value for get
-    const searchValue = e.target.item.value; //assigns string in form to search value  
+    const query = hook("search-dropdown").value;
+    const perPage = hook("per-page").value;
+    const searchValue = e.target.item.value;
     initiateSearch(query, searchValue, perPage);    
 })
 
-hook("favorite-button").addEventListener('click', () => {
-    confirmFavorites(currentBrewery),
-    renderFavorite(currentBrewery)
+hook("favorite-button").addEventListener('click', () => { 
+    if(activeProfile === undefined){
+        renderError("No profile selected. Select or create a profile to track your favorite breweries!", 5000);
+    }   
+    else if (verifyNonDuplicate(currentBrewery.id) === true) {
+        renderFavorite(currentBrewery)
+        confirmFavorites(currentBrewery)    
+    } 
+    else {
+        renderError("This is already one of your favorite breweries.", 3000)
+    }
 })
 
 hook("create-profile").addEventListener('click', () => {
@@ -55,7 +63,7 @@ hook("prof-button").addEventListener('mouseleave', (e) => {
 function initiateSearch(query, searchValue, perPage) {
     //searches API based on query, search value and num per page.
     if(searchValue.length === 0){
-        console.log('no search value entered');
+        renderError("No search value enterred. Please enter a search value.", 3000);
         return;
     }
     
@@ -94,11 +102,10 @@ function renderProfileList(profile) {
     //renders profile list to profile select dropdown.
     const profileEntry = spawn("li");
     profileEntry.innerText = profile.name;
-    profileEntry.value = profile.name  ;  
     availableProfiles.push(profile);
-    
+        
     profileEntry.addEventListener('click', (e)=> {
-        const currentProfile = e.target.innerText        
+        const currentProfile = profile.name    
         learnProfileFavorites(currentProfile, availableProfiles);
         renderActiveProfile(currentProfile);
         hook("prof-list").style.display = "none"})
@@ -113,12 +120,11 @@ function renderProfileList(profile) {
 
 
 function addProfile() {
-    //adds a newly create profile to the profile list and database.
-    
+    //adds a newly created profile to the profile list and database
     let profileName = prompt("Please enter your name (15 character max).", "new user")
     
     if(checkProfileNameValid(profileName) === false) {
-        console.log("invalid profile name")
+        renderError("Invalid profile name. Please choose a different name.", 4000)
         return;
     }
     
@@ -127,7 +133,7 @@ function addProfile() {
         favorites: [],
         id: availableProfiles.length + 1
     }
-    
+
     fetch("http://localhost:3000/profiles/", {
         method:"POST",
         headers: {
@@ -144,15 +150,13 @@ function addProfile() {
 function confirmFavorites(currentBrewery) {
     //confirms and saves changes to the profile favorites list persistently.
     const currentProfileId = activeProfile.id;
-    console.log(activeProfile);
-    console.log(currentBrewery.id);
 
     if(activeProfile.favorites.includes(currentBrewery.id)) {
-        console.log("duplicate found");
+        renderError("Duplicate favorite found. This is already one of your favorite breweries.", 4000);
     } 
     else {
         activeProfile.favorites.push(currentBrewery.id)
-        console.log(activeProfile);
+
         fetch(`http://localhost:3000/profiles/${currentProfileId}`, {
             method: "PATCH",
             headers: {
@@ -185,12 +189,12 @@ function renderActiveProfile(string) {
 }
 
 function renderFavorite(object){
-    //takes in an obnject and renders it as a favorite for the selected profile on the DOM
+    //takes in an object and renders it as a favorite for the selected profile on the DOM
     const fav = spawn('li');
     fav.textContent = object.name;
     fav.classList = "favorite"
     
-    document.querySelector('#favorite-list').append(fav);
+    grab('#favorite-list').append(fav);
     
     fav.addEventListener('click', e => {
         renderDetails(object)
@@ -199,14 +203,25 @@ function renderFavorite(object){
 }
 
 function renderDetails (object){
-    //renders the details for a selected brewery name anywhere on the page.
-    
+    //renders the details for a selected brewery name anywhere on the page. will not render null data for url or address.   
     hook("brewery").innerText = object.name;
     hook("phone").innerText = `Phone: ${object.phone}`;
-    hook("url-container").innerText = `${object.website_url}`;
-    hook("anchor").setAttribute("href", `${object.website_url}`)
-    hook("anchor").setAttribute("target", "_blank")
-    hook("street").innerText = `${object.street}`
+
+    if(object.website_url != null) {
+        hook("url-container").innerText = `${object.website_url}`;
+        hook("anchor").setAttribute("href", `${object.website_url}`);
+        hook("anchor").setAttribute("target", "_blank");
+    } else {
+        hook("url-container").innerText = 'No website found.';
+        hook("anchor").setAttribute("href", "none");
+    }
+
+    if(object.street != null){
+        hook("street").innerText = `${object.street}`;
+    } else {
+        hook("street").innerText = "";
+    }
+
     hook("city-state-zip").innerText = `${object.city}, ${object.state} ${object.postal_code}`
     
     currentBrewery = object;
@@ -219,7 +234,7 @@ function animateSelect(string) {
 }
 
 function highlightOnMouseover(element) {
-    //highlights element on mouseover. used primarily in profile select dropdown.
+    //highlights element on mouseover. used primarily in profile select dropdown. Requires mouseover event listener.
     element.style.color = "#ffcc00"
     element.addEventListener("mouseout", () => {
         element.style.color = ""
@@ -244,8 +259,6 @@ function checkProfileNameValid(string) {
     const invalidResponses = ['new user', 'Create Profile', 'create-profile'];
 
     availableProfiles.forEach(obj => {invalidResponses.push(obj.name)})
-
-    debugger
     
     if(string === null || string === undefined ||string.length > 15){
         return false;}
@@ -257,6 +270,18 @@ function checkProfileNameValid(string) {
         return false;}
 
     else {return true}
+}
+
+function renderError(string, num) {
+    //takes in string and number of milliseconds to display type of error occurring.
+    hook("error-display").innerText = string;
+    setTimeout(() => {hook("error-display").innerText = ""}, num);
+}
+
+function verifyNonDuplicate(string) {
+    if(activeProfile.favorites.includes(string) === true) {
+        return false;
+    } else {return true;}
 }
 
 ///////////////////////////////////////////

@@ -7,20 +7,26 @@
         "funkwerks-fort-collins",
         "mountain-cowboy-brewing-company-frederick",
         "equinox-brewing-fort-collins",
-        "hogshead-brewery-denver"
+        "hogshead-brewery-denver",
+        "gilded-goat-brewing-company-fort-collins",
+        "figueroa-mountain-brewing-santa-barbara-santa-barbara",
+        "anheuser-busch-inc-fort-collins-fort-collins"
       ],
       "id": 1
     },
     {
-      "name": "Dillon",
+      "name": "Henry",
       "favorites": [
+        "aztec-brewing-company-vista",
         "funkwerks-fort-collins",
-        "jessup-farm-barrel-house-fort-collins"
+        "equinox-brewing-fort-collins",
+        "gilded-goat-brewing-company-fort-collins",
+        "anheuser-busch-inc-fort-collins-fort-collins"
       ],
       "id": 2
     },
     {
-      "name": "Bob",
+      "name": "Dillon",
       "favorites": [
         "coopersmiths-pub-and-brewing-fort-collins",
         "intersect-brewing-fort-collins"
@@ -36,6 +42,16 @@
         "mountain-cowboy-brewing-company-frederick"
       ],
       "id": 4
+    },
+    {
+      "name": "taco",
+      "favorites": [
+        "coopersmiths-pub-and-brewing-fort-collins",
+        "gilded-goat-brewing-company-fort-collins",
+        "jessup-farm-barrel-house-fort-collins",
+        "funkwerks-fort-collins"
+      ],
+      "id": 5
     }
   ]
 }
