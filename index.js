@@ -189,10 +189,17 @@ function renderActiveProfile(string) {
 }
 
 function renderFavorite(object){
-    //takes in an object and renders it as a favorite for the selected profile on the DOM
+    //takes in an object and renders it as a favorite for the selected profile on the DOM.
+    //also adds event listeners for pulling up details and deleting farvorites entry. now with persistance.
+
     const fav = spawn('li');
-    fav.textContent = object.name;
-    fav.classList = "favorite"
+    const remove = spawn('button')
+    
+    fav.textContent = " " + object.name;
+    fav.classList = "favorite"   
+    
+    remove.innerText = 'X'
+    fav.prepend(remove);
     
     grab('#favorite-list').append(fav);
     
@@ -200,6 +207,33 @@ function renderFavorite(object){
         renderDetails(object)
         animateSelect(fav);
     })
+
+    remove.addEventListener('click', e => {
+        if(confirm("Delete favorite?") === true) {
+            removeFavorite(object, fav); 
+        } else {renderError("Cancelled delete.", 2500)}       
+    })
+}
+
+function removeFavorite (object, element) {
+    //removes favorite from active profile on client and server.
+    const removedId = object.id
+    const removeArray = activeProfile.favorites
+    const removeIndex = removeArray.indexOf(removedId)
+
+    removeArray.splice(removeIndex, 1);
+
+    activeProfile.favorites = removeArray;
+
+    element.remove()
+    
+    fetch(`http://localhost:3000/profiles/${activeProfile.id}`,{
+    method: "PATCH",
+    headers: {
+        "Content-Type":"application/json",
+        Accept: "application/json"},
+    body:JSON.stringify(activeProfile)}    
+    )
 }
 
 function renderDetails (object){

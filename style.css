@@ -46,10 +46,12 @@
 
 #prof-list {
   cursor: pointer;
+  list-style: none;
 }
 
 #favorite-list {
   cursor: pointer;
+  list-style: none;
 }
 
 #error-display {
