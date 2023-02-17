@@ -2,37 +2,22 @@
   "profiles": [
     {
       "name": "Jayson",
-      "favorites": [
-        "zwei-brewing-co-fort-collins",
-        "funkwerks-fort-collins",
-        "mountain-cowboy-brewing-company-frederick"
-      ],
+      "favorites": [],
       "id": 1
     },
     {
-      "name": "Dillon",
-      "favorites": [
-        "funkwerks-fort-collins",
-        "jessup-farm-barrel-house-fort-collins"
-      ],
+      "name": "Henry",
+      "favorites": [],
       "id": 2
     },
     {
-      "name": "Bob",
-      "favorites": [
-        "coopersmiths-pub-and-brewing-fort-collins",
-        "intersect-brewing-fort-collins"
-      ],
+      "name": "Dillon",
+      "favorites": [],
       "id": 3
     },
     {
       "name": "Kelsey",
-      "favorites": [
-        "prost-brewing-fort-collins-fort-collins",
-        "odell-brewing-co-fort-collins",
-        "funkwerks-fort-collins",
-        "mountain-cowboy-brewing-company-frederick"
-      ],
+      "favorites": [],
       "id": 4
     },
     {

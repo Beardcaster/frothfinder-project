@@ -7,18 +7,29 @@ let activeProfile;
 renderRandom();
 checkProfiles();
 
-//event listener for submitting search
+////////////////////////////////
+//////CORE EVENT LISTENERS//////
+////////////////////////////////
+
 hook("search-form").addEventListener('submit', e => {
     e.preventDefault();
-    const query = hook("search-dropdown").value; //value of dropdown to query to pass into get
-    const perPage = hook("per-page").value; //per page dropdown value for get
-    const searchValue = e.target.item.value; //assigns string in form to search value  
+    const query = hook("search-dropdown").value;
+    const perPage = hook("per-page").value;
+    const searchValue = e.target.item.value;
     initiateSearch(query, searchValue, perPage);    
 })
 
-hook("favorite-button").addEventListener('click', () => {
-    confirmFavorites(currentBrewery),
-    renderFavorite(currentBrewery)
+hook("favorite-button").addEventListener('click', () => { 
+    if(activeProfile === undefined){
+        renderError("No profile selected. Select or create a profile to track your favorite breweries!", 5000);
+    }   
+    else if (verifyNonDuplicate(currentBrewery.id) === true) {
+        renderFavorite(currentBrewery)
+        confirmFavorites(currentBrewery)    
+    } 
+    else {
+        renderError("This is already one of your favorite breweries.", 3000)
+    }
 })
 
 hook("create-profile").addEventListener('click', () => {
@@ -50,9 +61,9 @@ hook("prof-button").addEventListener('mouseleave', (e) => {
 /////////////////////////////////////
 
 function initiateSearch(query, searchValue, perPage) {
-//initiates search of API
+    //searches API based on query, search value and num per page.
     if(searchValue.length === 0){
-        console.log('no search value entered');
+        renderError("No search value enterred. Please enter a search value.", 3000);
         return;
     }
     
@@ -63,12 +74,10 @@ function initiateSearch(query, searchValue, perPage) {
         result.forEach(renderResults);
         hook("search-form").reset();        
     })
-    // .catch(console.log("search failed")); //this catch goes off even if search successful.
 }
 
 function renderResults(object) {
-    //renders list of results
-    //what other results should be rendered to the dom in this area. phone? city? address?
+    //renders results to search-result.
     const result = spawn("li");
     result.innerText = object.name;
     result.classList = ("search-res");
@@ -81,7 +90,7 @@ function renderResults(object) {
 }
 
 function checkProfiles() {
-    //checks the mock server for valid profiles.
+    //checks the database for available profiles.
     fetch("http://localhost:3000/profiles")
     .then(resp => resp.json())
     .then(data => {
@@ -90,14 +99,13 @@ function checkProfiles() {
 }
 
 function renderProfileList(profile) {
-    //adds valid profile names to profiles dropdown
+    //renders profile list to profile select dropdown.
     const profileEntry = spawn("li");
     profileEntry.innerText = profile.name;
-    profileEntry.value = profile.name  ;  
     availableProfiles.push(profile);
-    
+        
     profileEntry.addEventListener('click', (e)=> {
-        const currentProfile = e.target.innerText        
+        const currentProfile = profile.name    
         learnProfileFavorites(currentProfile, availableProfiles);
         renderActiveProfile(currentProfile);
         hook("prof-list").style.display = "none"})
@@ -112,11 +120,11 @@ function renderProfileList(profile) {
 
 
 function addProfile() {
-    
+    //adds a newly created profile to the profile list and database
     let profileName = prompt("Please enter your name (15 character max).", "new user")
     
     if(checkProfileNameValid(profileName) === false) {
-        console.log("invalid profile name")
+        renderError("Invalid profile name. Please choose a different name.", 4000)
         return;
     }
     
@@ -125,7 +133,7 @@ function addProfile() {
         favorites: [],
         id: availableProfiles.length + 1
     }
-    
+
     fetch("http://localhost:3000/profiles/", {
         method:"POST",
         headers: {
@@ -140,16 +148,15 @@ function addProfile() {
 }
 
 function confirmFavorites(currentBrewery) {
+    //confirms and saves changes to the profile favorites list persistently.
     const currentProfileId = activeProfile.id;
-    console.log(activeProfile);
-    console.log(currentBrewery.id);
 
     if(activeProfile.favorites.includes(currentBrewery.id)) {
-        console.log("duplicate found");
+        renderError("Duplicate favorite found. This is already one of your favorite breweries.", 4000);
     } 
     else {
         activeProfile.favorites.push(currentBrewery.id)
-        console.log(activeProfile);
+
         fetch(`http://localhost:3000/profiles/${currentProfileId}`, {
             method: "PATCH",
             headers: {
@@ -163,64 +170,105 @@ function confirmFavorites(currentBrewery) {
 }
 
 function learnProfileFavorites(string, array){
-    //this function gets the active profile's favorites from profile object and delivers them to API GET
-    activeProfile = array.find(object => object.name === string);   
-    // console.log(activeProfile);
+    //learns favorites already saved to selcted profile.
+    activeProfile = array.find(object => object.name === string);
     clearFavoritesList()
     activeProfile.favorites.forEach(getProfileFavoriteFromAPI) 
 }
 
-function getProfileFavoriteFromAPI(string) { 
-    //this function takes in favorite id values and searches the API to return renderable brewery objects.
-    // console.log(string)
+function getProfileFavoriteFromAPI(string) {
+    //gathers relevant information from api for each brewery in selected profile.
     fetch(`https://api.openbrewerydb.org/breweries/${string}`)
     .then(resp => resp.json())
     .then(data => renderFavorite(data))
 }
 
 function renderActiveProfile(string) {
+    //renders active profile to the active profile field above select profile dropdown
     hook("active-profile-name").innerText = string;
 }
 
 function renderFavorite(object){
-    //this function renders an item to the favorites list.
+    //takes in an object and renders it as a favorite for the selected profile on the DOM.
+    //also adds event listeners for pulling up details and deleting farvorites entry. now with persistance.
+
     const fav = spawn('li');
-    fav.textContent = object.name;
-    fav.classList = "favorite"
+    const remove = spawn('button')
     
-    document.querySelector('#favorite-list').append(fav);
+    fav.textContent = " " + object.name;
+    fav.classList = "favorite"   
+    
+    remove.innerText = 'X'
+    fav.prepend(remove);
+    
+    grab('#favorite-list').append(fav);
     
     fav.addEventListener('click', e => {
         renderDetails(object)
-        animateSelect(fav)
-        // console.log('click');
+        animateSelect(fav);
     })
-    // currentBrewery = object;
+
+    remove.addEventListener('click', e => {
+        if(confirm("Delete favorite?") === true) {
+            removeFavorite(object, fav); 
+        } else {renderError("Cancelled delete.", 2500)}       
+    })
+}
+
+function removeFavorite (object, element) {
+    //removes favorite from active profile on client and server.
+    const removedId = object.id
+    const removeArray = activeProfile.favorites
+    const removeIndex = removeArray.indexOf(removedId)
+
+    removeArray.splice(removeIndex, 1);
+
+    activeProfile.favorites = removeArray;
+
+    element.remove()
+    
+    fetch(`http://localhost:3000/profiles/${activeProfile.id}`,{
+    method: "PATCH",
+    headers: {
+        "Content-Type":"application/json",
+        Accept: "application/json"},
+    body:JSON.stringify(activeProfile)}    
+    )
 }
 
 function renderDetails (object){
-    //renders details of selected search result or favorite from favorite list
-    // console.log(object)
-    const detailResults = hook('details');
-    
+    //renders the details for a selected brewery name anywhere on the page. will not render null data for url or address.   
     hook("brewery").innerText = object.name;
     hook("phone").innerText = `Phone: ${object.phone}`;
-    hook("url-container").innerText = `${object.website_url}`;
-    hook("anchor").setAttribute("href", `${object.website_url}`)
-    hook("anchor").setAttribute("target", "_blank")
-    hook("street").innerText = `${object.street}`
+
+    if(object.website_url != null) {
+        hook("url-container").innerText = `${object.website_url}`;
+        hook("anchor").setAttribute("href", `${object.website_url}`);
+        hook("anchor").setAttribute("target", "_blank");
+    } else {
+        hook("url-container").innerText = 'No website found.';
+        hook("anchor").setAttribute("href", "none");
+    }
+
+    if(object.street != null){
+        hook("street").innerText = `${object.street}`;
+    } else {
+        hook("street").innerText = "";
+    }
+
     hook("city-state-zip").innerText = `${object.city}, ${object.state} ${object.postal_code}`
     
     currentBrewery = object;
 }
 
 function animateSelect(string) {
-    //animates selected search result with quick flash of blue can change later to match asthetic
+    //causes clicked brewery names to flash blue momentarily to confirm command receipt.
     string.style.color = "blue"
     setTimeout(() => string.style.color = "", 100)
 }
 
 function highlightOnMouseover(element) {
+    //highlights element on mouseover. used primarily in profile select dropdown. Requires mouseover event listener.
     element.style.color = "#ffcc00"
     element.addEventListener("mouseout", () => {
         element.style.color = ""
@@ -228,19 +276,23 @@ function highlightOnMouseover(element) {
 }
 
 function renderRandom(){
-    //renders a random brewery from the API on page load
+    //renders a random brewery from the API on site load.
     fetch("https://api.openbrewerydb.org/breweries/random")
     .then(resp => resp.json())
     .then(data => renderDetails(data[0]))
 }
 
-function clearFavoritesList() {    
+function clearFavoritesList() {   
+    //clears the favorites list in several circumstances. 
     hook("favorite-list").innerHTML = '';
 }
 
 function checkProfileNameValid(string) {
+    //checks enterred profile name to ensure that it will not interfere with other operations.
     
     const invalidResponses = ['new user', 'Create Profile', 'create-profile'];
+
+    availableProfiles.forEach(obj => {invalidResponses.push(obj.name)})
     
     if(string === null || string === undefined ||string.length > 15){
         return false;}
@@ -252,6 +304,18 @@ function checkProfileNameValid(string) {
         return false;}
 
     else {return true}
+}
+
+function renderError(string, num) {
+    //takes in string and number of milliseconds to display type of error occurring.
+    hook("error-display").innerText = string;
+    setTimeout(() => {hook("error-display").innerText = ""}, num);
+}
+
+function verifyNonDuplicate(string) {
+    if(activeProfile.favorites.includes(string) === true) {
+        return false;
+    } else {return true;}
 }
 
 ///////////////////////////////////////////
@@ -269,5 +333,4 @@ function spawn (string) {
 function grab (string) {
     return document.querySelector(`${string}`) //let me know if these things are helpful
 }
-
 

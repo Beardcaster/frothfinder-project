@@ -19,6 +19,7 @@
 
 #prof-list {
   padding-top: 100px;
+  list-style: none;
   text-align: left;
   padding: .75rem;
   background-color: rgb(61, 61, 61);
@@ -90,4 +91,14 @@
   border-width: 10px;
   border-radius: 50px;
   margin: 0px 15px 0px 15px;
+}
+
+#favorite-list {
+  cursor: pointer;
+  list-style: none;
+}
+
+#error-display {
+  position: absoulte;
+  color: #DD0000;
 }
