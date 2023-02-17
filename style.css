@@ -27,6 +27,7 @@
   box-shadow: 0 2px 5px 0 rgba(253, 253, 253, 0.3);
   transform: translateY(-10px);
   transition: 300ms ease-in-out, transform 150ms ease-in-out;
+  cursor: pointer;
 }
 
 #result-list h2{

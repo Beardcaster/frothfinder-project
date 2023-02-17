@@ -2,7 +2,11 @@
   "profiles": [
     {
       "name": "Jayson",
-      "favorites": [],
+      "favorites": [
+        "12degree-brewing-louisville",
+        "3-freaks-brewing-co-highlands-ranch",
+        "3-sheeps-brewing-co-sheboygan"
+      ],
       "id": 1
     },
     {
