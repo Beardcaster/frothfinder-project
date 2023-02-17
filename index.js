@@ -19,9 +19,17 @@ hook("search-form").addEventListener('submit', e => {
     initiateSearch(query, searchValue, perPage);    
 })
 
-hook("favorite-button").addEventListener('click', () => {
-    confirmFavorites(currentBrewery),
-    renderFavorite(currentBrewery)
+hook("favorite-button").addEventListener('click', () => { 
+    if(activeProfile === undefined){
+        renderError("No profile selected. Select or create a profile to track your favorite breweries!", 5000);
+    }   
+    else if (verifyNonDuplicate(currentBrewery.id) === true) {
+        renderFavorite(currentBrewery)
+        confirmFavorites(currentBrewery)    
+    } 
+    else {
+        renderError("This is already one of your favorite breweries.", 3000)
+    }
 })
 
 hook("create-profile").addEventListener('click', () => {
@@ -55,7 +63,7 @@ hook("prof-button").addEventListener('mouseleave', (e) => {
 function initiateSearch(query, searchValue, perPage) {
     //searches API based on query, search value and num per page.
     if(searchValue.length === 0){
-        renderError("No search value enterred. Please enter a search value.");
+        renderError("No search value enterred. Please enter a search value.", 3000);
         return;
     }
     
@@ -116,7 +124,7 @@ function addProfile() {
     let profileName = prompt("Please enter your name (15 character max).", "new user")
     
     if(checkProfileNameValid(profileName) === false) {
-        renderError("Invalid profile name. Please choose a different name.")
+        renderError("Invalid profile name. Please choose a different name.", 4000)
         return;
     }
     
@@ -144,7 +152,7 @@ function confirmFavorites(currentBrewery) {
     const currentProfileId = activeProfile.id;
 
     if(activeProfile.favorites.includes(currentBrewery.id)) {
-        renderError("Duplicate favorite found. This is already one of your favorite breweries.");
+        renderError("Duplicate favorite found. This is already one of your favorite breweries.", 4000);
     } 
     else {
         activeProfile.favorites.push(currentBrewery.id)
@@ -264,10 +272,16 @@ function checkProfileNameValid(string) {
     else {return true}
 }
 
-function renderError(string) {
-    //takes in string to display type of error occurring.
+function renderError(string, num) {
+    //takes in string and number of milliseconds to display type of error occurring.
     hook("error-display").innerText = string;
-    setTimeout(() => {hook("error-display").innerText = ""}, 2000);
+    setTimeout(() => {hook("error-display").innerText = ""}, num);
+}
+
+function verifyNonDuplicate(string) {
+    if(activeProfile.favorites.includes(string) === true) {
+        return false;
+    } else {return true;}
 }
 
 ///////////////////////////////////////////
