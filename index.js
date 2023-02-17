@@ -196,13 +196,25 @@ function renderFavorite(object){
 }
 
 function renderDetails (object){
-    //renders the details for a selected brewery name anywhere on the page.    
+    //renders the details for a selected brewery name anywhere on the page. will not render null data for url or address.   
     hook("brewery").innerText = object.name;
     hook("phone").innerText = `Phone: ${object.phone}`;
-    hook("url-container").innerText = `${object.website_url}`;
-    hook("anchor").setAttribute("href", `${object.website_url}`)
-    hook("anchor").setAttribute("target", "_blank")
-    hook("street").innerText = `${object.street}`
+
+    if(object.website_url != null) {
+        hook("url-container").innerText = `${object.website_url}`;
+        hook("anchor").setAttribute("href", `${object.website_url}`);
+        hook("anchor").setAttribute("target", "_blank");
+    } else {
+        hook("url-container").innerText = 'No website found.';
+        hook("anchor").setAttribute("href", "none");
+    }
+
+    if(object.street != null){
+        hook("street").innerText = `${object.street}`;
+    } else {
+        hook("street").innerText = "";
+    }
+
     hook("city-state-zip").innerText = `${object.city}, ${object.state} ${object.postal_code}`
     
     currentBrewery = object;
