@@ -51,3 +51,8 @@
 #favorite-list {
   cursor: pointer;
 }
+
+#error-display {
+  position: absoulte;
+  color: #DD0000;
+}

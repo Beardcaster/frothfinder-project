@@ -13,9 +13,9 @@ checkProfiles();
 
 hook("search-form").addEventListener('submit', e => {
     e.preventDefault();
-    const query = hook("search-dropdown").value; //value of dropdown to query to pass into get
-    const perPage = hook("per-page").value; //per page dropdown value for get
-    const searchValue = e.target.item.value; //assigns string in form to search value  
+    const query = hook("search-dropdown").value;
+    const perPage = hook("per-page").value;
+    const searchValue = e.target.item.value;
     initiateSearch(query, searchValue, perPage);    
 })
 
@@ -55,7 +55,7 @@ hook("prof-button").addEventListener('mouseleave', (e) => {
 function initiateSearch(query, searchValue, perPage) {
     //searches API based on query, search value and num per page.
     if(searchValue.length === 0){
-        console.log('no search value entered');
+        renderError("No search value enterred. Please enter a search value.");
         return;
     }
     
@@ -96,7 +96,7 @@ function renderProfileList(profile) {
     profileEntry.innerText = profile.name;
     profileEntry.value = profile.name  ;  
     availableProfiles.push(profile);
-    
+        
     profileEntry.addEventListener('click', (e)=> {
         const currentProfile = e.target.innerText        
         learnProfileFavorites(currentProfile, availableProfiles);
@@ -113,12 +113,11 @@ function renderProfileList(profile) {
 
 
 function addProfile() {
-    //adds a newly create profile to the profile list and database.
-    
+    //adds a newly created profile to the profile list and database
     let profileName = prompt("Please enter your name (15 character max).", "new user")
     
     if(checkProfileNameValid(profileName) === false) {
-        console.log("invalid profile name")
+        renderError("Invalid profile name. Please choose a different name.")
         return;
     }
     
@@ -144,15 +143,13 @@ function addProfile() {
 function confirmFavorites(currentBrewery) {
     //confirms and saves changes to the profile favorites list persistently.
     const currentProfileId = activeProfile.id;
-    console.log(activeProfile);
-    console.log(currentBrewery.id);
 
     if(activeProfile.favorites.includes(currentBrewery.id)) {
-        console.log("duplicate found");
+        renderError("Duplicate favorite found. This is already one of your favorite breweries.");
     } 
     else {
         activeProfile.favorites.push(currentBrewery.id)
-        console.log(activeProfile);
+
         fetch(`http://localhost:3000/profiles/${currentProfileId}`, {
             method: "PATCH",
             headers: {
@@ -185,12 +182,12 @@ function renderActiveProfile(string) {
 }
 
 function renderFavorite(object){
-    //takes in an obnject and renders it as a favorite for the selected profile on the DOM
+    //takes in an object and renders it as a favorite for the selected profile on the DOM
     const fav = spawn('li');
     fav.textContent = object.name;
     fav.classList = "favorite"
     
-    document.querySelector('#favorite-list').append(fav);
+    grab('#favorite-list').append(fav);
     
     fav.addEventListener('click', e => {
         renderDetails(object)
@@ -199,8 +196,7 @@ function renderFavorite(object){
 }
 
 function renderDetails (object){
-    //renders the details for a selected brewery name anywhere on the page.
-    
+    //renders the details for a selected brewery name anywhere on the page.    
     hook("brewery").innerText = object.name;
     hook("phone").innerText = `Phone: ${object.phone}`;
     hook("url-container").innerText = `${object.website_url}`;
@@ -219,7 +215,7 @@ function animateSelect(string) {
 }
 
 function highlightOnMouseover(element) {
-    //highlights element on mouseover. used primarily in profile select dropdown.
+    //highlights element on mouseover. used primarily in profile select dropdown. Requires mouseover event listener.
     element.style.color = "#ffcc00"
     element.addEventListener("mouseout", () => {
         element.style.color = ""
@@ -244,8 +240,6 @@ function checkProfileNameValid(string) {
     const invalidResponses = ['new user', 'Create Profile', 'create-profile'];
 
     availableProfiles.forEach(obj => {invalidResponses.push(obj.name)})
-
-    debugger
     
     if(string === null || string === undefined ||string.length > 15){
         return false;}
@@ -257,6 +251,12 @@ function checkProfileNameValid(string) {
         return false;}
 
     else {return true}
+}
+
+function renderError(string) {
+    //takes in string to display type of error occurring.
+    hook("error-display").innerText = string;
+    setTimeout(() => {hook("error-display").innerText = ""}, 2000);
 }
 
 ///////////////////////////////////////////
