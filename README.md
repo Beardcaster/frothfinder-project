@@ -28,9 +28,9 @@ Use of this profile feature requires hosting of a json-server watching the db.js
 
 The JavaScript code for this project is organized as follows:
 
--Global variables and functions to run on page load.
--Core event listeners.
--Functions loosely organized by relation to eachother.
--Helper functions used to keep repetetive code down.
+-Global variables and functions to run on page load.  
+-Core event listeners.  
+-Functions loosely organized by relation to eachother.  
+-Helper functions used to keep repetetive code down.  
 
 # Code written by Henry Yun and Jayson Ambrose #
