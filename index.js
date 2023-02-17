@@ -53,6 +53,7 @@ hook("prof-button").addEventListener('mouseleave', (e) => {
 /////////////////////////////////////
 
 function initiateSearch(query, searchValue, perPage) {
+    //searches API based on query, search value and num per page.
     if(searchValue.length === 0){
         console.log('no search value entered');
         return;
@@ -68,6 +69,7 @@ function initiateSearch(query, searchValue, perPage) {
 }
 
 function renderResults(object) {
+    //renders results to search-result.
     const result = spawn("li");
     result.innerText = object.name;
     result.classList = ("search-res");
@@ -80,6 +82,7 @@ function renderResults(object) {
 }
 
 function checkProfiles() {
+    //checks the database for available profiles.
     fetch("http://localhost:3000/profiles")
     .then(resp => resp.json())
     .then(data => {
@@ -88,6 +91,7 @@ function checkProfiles() {
 }
 
 function renderProfileList(profile) {
+    //renders profile list to profile select dropdown.
     const profileEntry = spawn("li");
     profileEntry.innerText = profile.name;
     profileEntry.value = profile.name  ;  
@@ -109,6 +113,7 @@ function renderProfileList(profile) {
 
 
 function addProfile() {
+    //adds a newly create profile to the profile list and database.
     
     let profileName = prompt("Please enter your name (15 character max).", "new user")
     
@@ -137,6 +142,7 @@ function addProfile() {
 }
 
 function confirmFavorites(currentBrewery) {
+    //confirms and saves changes to the profile favorites list persistently.
     const currentProfileId = activeProfile.id;
     console.log(activeProfile);
     console.log(currentBrewery.id);
@@ -160,22 +166,26 @@ function confirmFavorites(currentBrewery) {
 }
 
 function learnProfileFavorites(string, array){
+    //learns favorites already saved to selcted profile.
     activeProfile = array.find(object => object.name === string);
     clearFavoritesList()
     activeProfile.favorites.forEach(getProfileFavoriteFromAPI) 
 }
 
 function getProfileFavoriteFromAPI(string) {
+    //gathers relevant information from api for each brewery in selected profile.
     fetch(`https://api.openbrewerydb.org/breweries/${string}`)
     .then(resp => resp.json())
     .then(data => renderFavorite(data))
 }
 
 function renderActiveProfile(string) {
+    //renders active profile to the active profile field above select profile dropdown
     hook("active-profile-name").innerText = string;
 }
 
 function renderFavorite(object){
+    //takes in an obnject and renders it as a favorite for the selected profile on the DOM
     const fav = spawn('li');
     fav.textContent = object.name;
     fav.classList = "favorite"
@@ -189,6 +199,7 @@ function renderFavorite(object){
 }
 
 function renderDetails (object){
+    //renders the details for a selected brewery name anywhere on the page.
     
     hook("brewery").innerText = object.name;
     hook("phone").innerText = `Phone: ${object.phone}`;
@@ -202,11 +213,13 @@ function renderDetails (object){
 }
 
 function animateSelect(string) {
+    //causes clicked brewery names to flash blue momentarily to confirm command receipt.
     string.style.color = "blue"
     setTimeout(() => string.style.color = "", 100)
 }
 
 function highlightOnMouseover(element) {
+    //highlights element on mouseover. used primarily in profile select dropdown.
     element.style.color = "#ffcc00"
     element.addEventListener("mouseout", () => {
         element.style.color = ""
@@ -214,18 +227,25 @@ function highlightOnMouseover(element) {
 }
 
 function renderRandom(){
+    //renders a random brewery from the API on site load.
     fetch("https://api.openbrewerydb.org/breweries/random")
     .then(resp => resp.json())
     .then(data => renderDetails(data[0]))
 }
 
-function clearFavoritesList() {    
+function clearFavoritesList() {   
+    //clears the favorites list in several circumstances. 
     hook("favorite-list").innerHTML = '';
 }
 
 function checkProfileNameValid(string) {
+    //checks enterred profile name to ensure that it will not interfere with other operations.
     
     const invalidResponses = ['new user', 'Create Profile', 'create-profile'];
+
+    availableProfiles.forEach(obj => {invalidResponses.push(obj.name)})
+
+    debugger
     
     if(string === null || string === undefined ||string.length > 15){
         return false;}
