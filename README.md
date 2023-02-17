@@ -18,3 +18,20 @@ can check them off later as I visit them.
 # wireframe
 
 https://wireframe.cc/crld4M
+
+# instructions
+
+To use this website, first select what criteria will be used for your search in the "Search By:" dropdown, then enter a search value.
+The search will be executed and results will be listed under the "Search Results heading. Number of results listed is determined
+using the "Per Page:" dropdown.
+
+Clicking a search result or favorites list element will populate the "Details" section with additional information about the brewery.
+
+The user can click "Profile Select" to choose or create a new profile. To create a profile, click on the "Profile Select" button, 
+then click on "Create Profile". Once your profile has been created, you can select it from the "Profile Select" drop-down menu. 
+When the profile has been selected, the "Profile Select" menu will close and the active profile will be displayed above the button.
+With a profile selected, you can click the "Favorite!" button under "Details" to add that brewery to your favorites list.
+
+Use of this profile feature requires hosting of a json-server watching the db.json file included in this repository. Currently
+all profile-based fetch requests are targetting "http://localhost:3000/profiles" or "http://localhost:3000/profiles/<profile id>".
+Without a connected server, the site will behave as normal, however, created profiles will be non-persistent.

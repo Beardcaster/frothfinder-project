@@ -94,11 +94,10 @@ function renderProfileList(profile) {
     //renders profile list to profile select dropdown.
     const profileEntry = spawn("li");
     profileEntry.innerText = profile.name;
-    profileEntry.value = profile.name  ;  
     availableProfiles.push(profile);
         
     profileEntry.addEventListener('click', (e)=> {
-        const currentProfile = e.target.innerText        
+        const currentProfile = profile.name    
         learnProfileFavorites(currentProfile, availableProfiles);
         renderActiveProfile(currentProfile);
         hook("prof-list").style.display = "none"})
@@ -126,7 +125,7 @@ function addProfile() {
         favorites: [],
         id: availableProfiles.length + 1
     }
-    
+
     fetch("http://localhost:3000/profiles/", {
         method:"POST",
         headers: {
