@@ -139,9 +139,27 @@ function addProfile() {
     renderProfileList(newProfile);
 }
 
-function updateProfileFavorites (object) {
-    //DETERMINE CURRENT PROFILE
-    //MAKE POST TO CURRENT PROFILE UPDATING FAVORITES LIST , THIS MAY NEED TO BE A PATCH Favorites: [ string of arrays here ]
+function confirmFavorites(currentBrewery) {
+    const currentProfileId = activeProfile.id;
+    console.log(activeProfile);
+    console.log(currentBrewery.id);
+
+    if(activeProfile.favorites.includes(currentBrewery.id)) {
+        console.log("duplicate found");
+    } 
+    else {
+        activeProfile.favorites.push(currentBrewery.id)
+        console.log(activeProfile);
+        fetch(`http://localhost:3000/profiles/${currentProfileId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json"
+            },
+            body: JSON.stringify(activeProfile)
+        })
+        .then(response => response.json())
+    }
 }
 
 function learnProfileFavorites(string, array){
@@ -252,25 +270,4 @@ function grab (string) {
     return document.querySelector(`${string}`) //let me know if these things are helpful
 }
 
-function confirmFavorites(currentBrewery) {
-    const currentProfileId = activeProfile.id;
-    console.log(activeProfile);
-    console.log(currentBrewery.id);
 
-    if(activeProfile.favorites.includes(currentBrewery.id)) {
-        console.log("duplicate found");
-    } 
-    else {
-        activeProfile.favorites.push(currentBrewery.id)
-        console.log(activeProfile);
-        fetch(`http://localhost:3000/profiles/${currentProfileId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json"
-            },
-            body: JSON.stringify(activeProfile)
-        })
-        .then(response => response.json())
-    }
-}
