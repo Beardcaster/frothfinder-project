@@ -3,26 +3,12 @@
     {
       "name": "Jayson",
       "favorites": [
-        "12degree-brewing-louisville",
-        "3-freaks-brewing-co-highlands-ranch",
-        "3-sheeps-brewing-co-sheboygan"
+        "equinox-brewing-fort-collins",
+        "zwei-brewing-co-fort-collins",
+        "maxline-brewing-fort-collins",
+        "brewery-ommegang-cooperstown"
       ],
       "id": 1
-    },
-    {
-      "name": "Henry",
-      "favorites": [],
-      "id": 2
-    },
-    {
-      "name": "Dillon",
-      "favorites": [],
-      "id": 3
-    },
-    {
-      "name": "Kelsey",
-      "favorites": [],
-      "id": 4
     },
     {
       "name": "Henry",
@@ -32,7 +18,20 @@
         "magpie-brewing-co-jeju-si",
         "101-brewery-quilcene"
       ],
-      "id": 5
+      "id": 2
+    },
+    {
+      "name": "Dillon",
+      "favorites": [
+        "funkwerks-fort-collins",
+        "jessup-farm-barrel-house-fort-collins"
+      ],
+      "id": 3
+    },
+    {
+      "name": "Kelsey",
+      "favorites": [],
+      "id": 4
     }
   ]
 }

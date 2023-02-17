@@ -31,6 +31,10 @@ The JavaScript code for this project is organized as follows:
 -Global variables and functions to run on page load.  
 -Core event listeners.  
 -Functions loosely organized by relation to eachother.  
--Helper functions used to keep repetetive code down.  
+-Helper functions used to keep repetetive code down. 
 
-# Code written by Henry Yun and Jayson Ambrose #
+
+ Code written by Henry Yun and Jayson Ambrose
+
+ Open Brewery DB API created by Chris J Mears and Wandering Leaf Studios LLC.  
+ With initial dataset provided by Brewers Association.
